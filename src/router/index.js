@@ -14,6 +14,36 @@ const router = createRouter({
                     component: () => import('@/views/Dashboard.vue')
                 },
                 {
+                    path: '/trips',
+                    name: 'trips',
+                    component: () => import('@/views/trips/Trips.vue')
+                },
+                {
+                    path: '/planning',
+                    name: 'planning',
+                    component: () => import('@/views/trips/Planning.vue')
+                },
+                {
+                    path: '/budget',
+                    name: 'budget',
+                    component: () => import('@/views/trips/Budget.vue')
+                },
+                {
+                    path: '/notes',
+                    name: 'notes',
+                    component: () => import('@/views/trips/Notes.vue')
+                },
+                {
+                    path: '/documents',
+                    name: 'documents',
+                    component: () => import('@/views/trips/Documents.vue')
+                },
+                {
+                    path: '/settings',
+                    name: 'settings',
+                    component: () => import('@/views/Settings.vue')
+                },
+                {
                     path: '/uikit/formlayout',
                     name: 'formlayout',
                     component: () => import('@/views/uikit/FormLayout.vue')
