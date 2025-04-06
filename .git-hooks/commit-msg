@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+import fs from "fs"
+
+const conventionalCommitMessageRegExp = /^(build|ci|docs|feat|fix|refactor|revert|style|test){1}(\([\w\-\.]+\))?(!)?: [A-Z]+-[0-9]+ ([\w ])([\w ])+([\s\S]*)/g;
+let exitCode = 0;
+const commitMsgFile = process.argv[2];
+const message = fs.readFileSync(commitMsgFile, 'utf8');
+const isValid = conventionalCommitMessageRegExp.test(message) 
+   ?? message.startsWith('Merge branch');
+
+if(!isValid) {
+   console.log('Cannot commit: the commit message does not comply with conventional commits standards. {prefix}: {Jira task} - {description}');
+   exitCode = 1;
+}
+
+process.exit(exitCode);

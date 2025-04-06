@@ -1,0 +1,42 @@
+.app-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  margin: 0;
+  border: 2px solid #afafaf;
+  border-radius: 4px;
+  background-color: transparent;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+
+  &:not(.app-checkbox_disabled):hover {
+    border-color: #9b9b9b;
+  }
+
+  &_disabled {
+    border-color: #e9e9e9;
+    cursor: not-allowed;
+  }
+
+  &_checked {
+    background-color: #5295d5;
+    border: none;
+
+    &.app-checkbox_disabled {
+      background-color: #d4d4d4;
+      color: #e9e9e9;
+    }
+
+    &:not(.app-checkbox_disabled):hover {
+      background-color: #3c80c1;
+    }
+  }
+
+  &__input {
+    display: none;
+  }
+}

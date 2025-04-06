@@ -1,0 +1,23 @@
+.node-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  outline: none;
+  border: none;
+  border-radius: 4px;
+  background-color: #e9e9e9;
+  transition: background-color 0.3ms ease-in;
+  cursor: pointer;
+
+  svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  &:hover {
+    background-color: #5c606f;
+    color: #f7f7f7;
+  }
+}
