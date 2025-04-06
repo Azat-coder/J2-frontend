@@ -49,9 +49,9 @@ export const routes = [
     },
   },
   {
-    path: '/contractors',
-    name: 'Contractors',
-    component: () => import('@/pages/contractors'),
+    path: '/notifications',
+    name: 'Notifications',
+    component: () => import('@/pages/notifications'),
     meta: {
       layout: MainLayout,
     },

@@ -1,3 +1,12 @@
+<script setup lang="ts">
+  import { type IAppMenuItem } from '@/shared/ui/AppMenuItem';
+  import { ref } from 'vue';
+  import { AppMenuItem } from '@/shared/ui/AppMenuItem';
+  import { menuItems } from '../assets';
+
+  const model = ref<IAppMenuItem[]>(menuItems);
+</script>
+
 <template>
   <ul class="layout-menu">
     <template
@@ -11,15 +20,6 @@
     </template>
   </ul>
 </template>
-
-<script setup lang="ts">
-  import { type IAppMenuItem } from '@/shared/ui/AppMenuItem';
-  import { ref } from 'vue';
-  import { AppMenuItem } from '@/shared/ui/AppMenuItem';
-  import { menuItems } from '../assets';
-
-  const model = ref<IAppMenuItem[]>(menuItems);
-</script>
 
 <style lang="scss">
   @import './style';

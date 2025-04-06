@@ -1,24 +1,3 @@
-<template>
-  <component
-    :is="DynamicLayout"
-    v-if="DynamicLayout"
-    :class="containerClass"
-  >
-    <template #header>
-      <AppTopbar />
-    </template>
-
-    <template #sidebar>
-      <AppSidebar />
-    </template>
-
-    <template #default>
-      <router-view />
-    </template>
-  </component>
-  <AppNotifications />
-</template>
-
 <script setup lang="ts">
   import { computed, ref, watch, type Component } from 'vue';
   import { useRoute } from 'vue-router';
@@ -83,3 +62,24 @@
     );
   };
 </script>
+
+<template>
+  <component
+    :is="DynamicLayout"
+    v-if="DynamicLayout"
+    :class="containerClass"
+  >
+    <template #header>
+      <AppTopbar />
+    </template>
+
+    <template #sidebar>
+      <AppSidebar />
+    </template>
+
+    <template #default>
+      <router-view />
+    </template>
+  </component>
+  <AppNotifications />
+</template>
