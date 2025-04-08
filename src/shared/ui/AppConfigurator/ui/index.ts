@@ -1,0 +1,1 @@
+export { default as AppConfigurator } from './AppConfigurator.vue';

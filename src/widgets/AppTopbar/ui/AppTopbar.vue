@@ -77,3 +77,7 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
         </div>
     </div>
 </template>
+
+<style lang="scss" scoped>
+@import './style.scss';
+</style>

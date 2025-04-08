@@ -148,4 +148,10 @@ const model = ref([
     </ul>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.layout-menu {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+</style>
