@@ -1,1 +1,0 @@
-export const APP_NOTIFICATIONS_DELAY = 5000;
