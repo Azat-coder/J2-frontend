@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 
-import AppMenuItem from './AppMenuItem.vue';
+import { AppMenuItem } from '@/shared/ui/AppMenuItem';
 
 const model = ref([
     {
