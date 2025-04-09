@@ -1,8 +1,9 @@
 <script setup>
 import { useLayout } from '@/layout/composables/layout';
 import { AppConfigurator } from '@/features/AppConfigurator';
+import { DarkModeButton } from '@/features/DarkModeButton';
 
-const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
+const { toggleMenu } = useLayout();
 </script>
 
 <template>
@@ -12,7 +13,7 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
                 <i class="pi pi-bars"></i>
             </button>
             <router-link to="/" class="layout-topbar-logo">
-                <svg viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- <svg viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         fill-rule="evenodd"
                         clip-rule="evenodd"
@@ -28,7 +29,7 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
                             fill="var(--primary-color)"
                         />
                     </g>
-                </svg>
+                </svg> -->
 
                 <span>JARVIS</span>
             </router-link>
@@ -36,9 +37,7 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
 
         <div class="layout-topbar-actions">
             <div class="layout-config-menu">
-                <button type="button" class="layout-topbar-action" @click="toggleDarkMode">
-                    <i :class="['pi', { 'pi-moon': isDarkTheme, 'pi-sun': !isDarkTheme }]"></i>
-                </button>
+                <DarkModeButton />
                 <div class="relative">
                     <button
                         v-styleclass="{ selector: '@next', enterFromClass: 'hidden', enterActiveClass: 'animate-scalein', leaveToClass: 'hidden', leaveActiveClass: 'animate-fadeout', hideOnOutsideClick: true }"

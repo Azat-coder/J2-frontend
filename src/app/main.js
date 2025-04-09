@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import App from './App.vue';
-import { router } from './providers';
+import { pinia, router } from './providers';
 
 import Aura from '@primeuix/themes/aura';
 import PrimeVue from 'primevue/config';
@@ -11,6 +11,7 @@ import './assets/styles.scss';
 
 const app = createApp(App);
 
+app.use(pinia);
 app.use(router);
 app.use(PrimeVue, {
     theme: {
