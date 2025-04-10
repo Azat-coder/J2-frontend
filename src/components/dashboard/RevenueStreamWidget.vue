@@ -26,7 +26,7 @@ function setChartData() {
                 label: '25-29',
                 backgroundColor: documentStyle.getPropertyValue('--p-primary-300'),
                 data: [1, 0, 0, 0],
-                barThickness: 32
+                barThickness: 42
             },
             {
                 type: 'bar',
@@ -38,7 +38,7 @@ function setChartData() {
                     topRight: 8
                 },
                 borderSkipped: true,
-                barThickness: 32
+                barThickness: 42
             }
         ]
     };
