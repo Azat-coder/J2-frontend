@@ -11,6 +11,11 @@ export const routes = [
                 component: () => import('@/views/Dashboard.vue')
             },
             {
+                path: '/settings',
+                name: 'settings',
+                component: () => import('@/views/Settings.vue')
+            },
+            {
                 path: '/uikit/formlayout',
                 name: 'formlayout',
                 component: () => import('@/views/uikit/FormLayout.vue')

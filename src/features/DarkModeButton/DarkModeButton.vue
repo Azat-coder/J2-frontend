@@ -4,7 +4,7 @@ const { isDarkMode, toggleDarkMode } = useDarkMode();
 </script>
 
 <template>
-    <input id="toggle" class="toggle" type="checkbox" :checked="!isDarkMode" @change="toggleDarkMode" />
+    <input id="toggle" class="toggle" type="checkbox" :checked="isDarkMode" @change="toggleDarkMode" />
 </template>
 
 <style scoped>

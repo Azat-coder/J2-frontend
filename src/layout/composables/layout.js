@@ -1,9 +1,6 @@
 import { computed, reactive } from 'vue';
 
 const layoutConfig = reactive({
-    preset: 'Aura',
-    primary: 'emerald',
-    surface: null,
     menuMode: 'static'
 });
 
@@ -36,17 +33,11 @@ export function useLayout() {
 
     const isSidebarActive = computed(() => layoutState.overlayMenuActive || layoutState.staticMenuMobileActive);
 
-    const getPrimary = computed(() => layoutConfig.primary);
-
-    const getSurface = computed(() => layoutConfig.surface);
-
     return {
         layoutConfig,
         layoutState,
         toggleMenu,
         isSidebarActive,
-        getPrimary,
-        getSurface,
         setActiveMenuItem
     };
 }

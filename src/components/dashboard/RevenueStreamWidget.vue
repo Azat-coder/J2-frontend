@@ -1,9 +1,10 @@
 <script setup>
-import { useLayout } from '@/layout/composables/layout';
+import { useStyleConfig } from '@/features/AppConfigurator/model';
+import { useDarkMode } from '@/features/DarkModeButton/model';
 import { onMounted, ref, watch } from 'vue';
 
-const { getPrimary, getSurface, isDarkTheme } = useLayout();
-
+const { getPrimary, getSurface } = useStyleConfig();
+const { isDarkMode: isDarkTheme } = useDarkMode();
 const chartData = ref(null);
 const chartOptions = ref(null);
 
@@ -11,27 +12,27 @@ function setChartData() {
     const documentStyle = getComputedStyle(document.documentElement);
 
     return {
-        labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+        labels: ['Блондинки', 'Брюнетки', 'Шатенки', 'Рыжие'],
         datasets: [
             {
                 type: 'bar',
-                label: 'Subscriptions',
+                label: '17-24',
                 backgroundColor: documentStyle.getPropertyValue('--p-primary-400'),
-                data: [4000, 10000, 15000, 4000],
+                data: [1, 7, 6, 0],
                 barThickness: 32
             },
             {
                 type: 'bar',
-                label: 'Advertising',
+                label: '25-29',
                 backgroundColor: documentStyle.getPropertyValue('--p-primary-300'),
-                data: [2100, 8400, 2400, 7500],
+                data: [1, 0, 0, 0],
                 barThickness: 32
             },
             {
                 type: 'bar',
-                label: 'Affiliate',
+                label: '30+',
                 backgroundColor: documentStyle.getPropertyValue('--p-primary-200'),
-                data: [4100, 5200, 3400, 7400],
+                data: [0, 1, 1, 0],
                 borderRadius: {
                     topLeft: 8,
                     topRight: 8
@@ -83,14 +84,16 @@ watch([getPrimary, getSurface, isDarkTheme], () => {
 });
 
 onMounted(() => {
-    chartData.value = setChartData();
-    chartOptions.value = setChartOptions();
+    setTimeout(() => {
+        chartData.value = setChartData();
+        chartOptions.value = setChartOptions();
+    });
 });
 </script>
 
 <template>
     <div class="card">
-        <div class="font-semibold text-xl mb-4">Revenue Stream</div>
+        <div class="font-semibold text-xl mb-4">Девушки по возрастам</div>
         <Chart type="bar" :data="chartData" :options="chartOptions" class="h-80" />
     </div>
 </template>

@@ -1,9 +1,9 @@
 <script setup>
 import { useLayout } from '@/layout/composables/layout';
-import { AppConfigurator } from '@/features/AppConfigurator';
 import { DarkModeButton } from '@/features/DarkModeButton';
-
+import { useRouter } from 'vue-router';
 const { toggleMenu } = useLayout();
+const router = useRouter();
 </script>
 
 <template>
@@ -38,16 +38,6 @@ const { toggleMenu } = useLayout();
         <div class="layout-topbar-actions">
             <div class="layout-config-menu">
                 <DarkModeButton />
-                <div class="relative">
-                    <button
-                        v-styleclass="{ selector: '@next', enterFromClass: 'hidden', enterActiveClass: 'animate-scalein', leaveToClass: 'hidden', leaveActiveClass: 'animate-fadeout', hideOnOutsideClick: true }"
-                        type="button"
-                        class="layout-topbar-action layout-topbar-action-highlight"
-                    >
-                        <i class="pi pi-palette"></i>
-                    </button>
-                    <AppConfigurator />
-                </div>
             </div>
 
             <button
@@ -70,6 +60,10 @@ const { toggleMenu } = useLayout();
                     <button type="button" class="layout-topbar-action">
                         <i class="pi pi-user"></i>
                         <span>Profile</span>
+                    </button>
+                    <button type="button" class="layout-topbar-action" @click="router.push({ name: 'settings' })">
+                        <i class="pi pi-cog"></i>
+                        <span>Настройки</span>
                     </button>
                 </div>
             </div>
