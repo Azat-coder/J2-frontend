@@ -8,7 +8,8 @@ interface IUseDarkMode {
 }
 
 export function useDarkMode(): IUseDarkMode {
-  const isDarkMode = useLocalStorage('isDarkMode', false);
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const isDarkMode = useLocalStorage('isDarkMode', prefersDark);
 
   const toggleDarkMode = () => {
     if (!document.startViewTransition) {
@@ -17,7 +18,7 @@ export function useDarkMode(): IUseDarkMode {
       return;
     }
 
-    document.startViewTransition(() => executeDarkModeToggle(event));
+    document.startViewTransition(() => executeDarkModeToggle());
   };
 
   const executeDarkModeToggle = () => {
@@ -25,7 +26,7 @@ export function useDarkMode(): IUseDarkMode {
   };
 
   watchEffect(() => {
-    if (!isDarkMode.value) {
+    if (isDarkMode.value) {
       document.documentElement?.classList.add('app-dark');
     } else {
       document.documentElement?.classList.remove('app-dark');
