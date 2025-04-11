@@ -1,9 +1,26 @@
 <script setup>
 import { useLayout } from '@/layout/composables/layout';
 import { DarkModeButton } from '@/features/DarkModeButton';
-import { useRouter } from 'vue-router';
+import { DashboardConfigurator } from '@/features/DashboardConfigurator';
+import { useRouter, useRoute } from 'vue-router';
 const { toggleMenu } = useLayout();
 const router = useRouter();
+const route = useRoute();
+import { ref } from 'vue';
+
+const dashboardConfiguratorOpened = ref(false);
+
+const openDashboardConfigurator = () => {
+    dashboardConfiguratorOpened.value = true;
+};
+
+function hideDialog() {
+    dashboardConfiguratorOpened.value = false;
+}
+
+const saveChanges = () => {
+    dashboardConfiguratorOpened.value = false;
+};
 </script>
 
 <template>
@@ -49,9 +66,9 @@ const router = useRouter();
 
             <div class="layout-topbar-menu hidden lg:block">
                 <div class="layout-topbar-menu-content">
-                    <button type="button" class="layout-topbar-action">
-                        <i class="pi pi-calendar"></i>
-                        <span>Calendar</span>
+                    <button type="button" class="layout-topbar-action" v-if="route.name === 'dashboard'" @click="openDashboardConfigurator">
+                        <i class="pi pi-th-large"></i>
+                        <span>Dashboard settings</span>
                     </button>
                     <button type="button" class="layout-topbar-action">
                         <i class="pi pi-inbox"></i>
@@ -67,6 +84,14 @@ const router = useRouter();
                     </button>
                 </div>
             </div>
+            <Dialog v-model:visible="dashboardConfiguratorOpened" :style="{ width: '450px' }" header="Конфигуратор дашборда" :modal="true">
+                <DashboardConfigurator />
+
+                <template #footer>
+                    <Button label="Отменить" icon="pi pi-times" text @click="hideDialog" />
+                    <Button label="Сохранить изменения" icon="pi pi-check" @click="saveChanges" />
+                </template>
+            </Dialog>
         </div>
     </div>
 </template>

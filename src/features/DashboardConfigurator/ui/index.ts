@@ -1,0 +1,1 @@
+export { default as DashboardConfigurator } from './DashboardConfigurator.vue'
