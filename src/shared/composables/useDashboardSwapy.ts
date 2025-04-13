@@ -7,7 +7,7 @@ export function useDashboardSwapy() {
     const swapy = ref(null);
     const dashboardStore = useDashboardStore();
 
-    const slotItemMap = ref(utils.initSlotItemMap(dashboardStore.dashboardItems, 'id'));
+    const slotItemMap = computed(() => utils.initSlotItemMap(dashboardStore.dashboardItems, 'id'));
     const slottedItems = computed(() => utils.toSlottedItems(dashboardStore.dashboardItems, 'id', slotItemMap.value));
 
     watch(dashboardStore.dashboardItems, () => utils.dynamicSwapy(swapy.value, dashboardStore.dashboardItems, 'id', slotItemMap.value, (value) => (slotItemMap.value = value)), { deep: true });
