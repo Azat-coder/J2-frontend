@@ -7,45 +7,81 @@ import RecentSalesWidget from '@/components/dashboard/RecentSalesWidget.vue';
 import RevenueStreamWidget from '@/components/dashboard/RevenueStreamWidget.vue';
 
 export const useDashboardStore = defineStore('dashboard', () => {
-    const dashboardItems = ref([
+    const dashboardItemsList = ref([
         {
-            id: 'a',
-            slot: 1,
+            id: 'girlsbyage',
             component: markRaw(RecentSalesWidget),
-            cols: 'col-span-12 xl:col-span-6'
+            cols: 'col-span-12 xl:col-span-6',
+            slot: 1,
         },
         {
-            id: 'b',
-            slot: 2,
+            id: 'girlsbynationality',
             component: markRaw(BestSellingWidget),
-            cols: 'col-span-12 xl:col-span-6'
+            cols: 'col-span-12 xl:col-span-6',
+            slot: 2,
         },
         {
             id: 'c',
-            slot: 3,
             component: markRaw(RevenueStreamWidget),
-            cols: 'col-span-12 xl:col-span-6'
+            cols: 'col-span-12 xl:col-span-6',
+            slot: 3,
         },
         {
-            id: 'd',
-            slot: 4,
+            id: 'girlsbyweight',
             component: markRaw(NotificationsWidget),
-            cols: 'col-span-12 xl:col-span-6'
+            cols: 'col-span-12 xl:col-span-6',
+            slot: 4,
+        }
+    ]);
+    const dashboardItems = ref([
+        {
+            id: 'c',
+            component: markRaw(RevenueStreamWidget),
+            cols: 'col-span-12 xl:col-span-6',
+        },
+        {
+            id: 'girlsbyweight',
+            component: markRaw(NotificationsWidget),
+            cols: 'col-span-12 xl:col-span-6',
         }
     ]);
 
-    const updateItemSlot = (id, newSlot) => {
-        const item = dashboardItems.value.find((i) => i.id === id);
-        if (item) item.slot = newSlot;
+    const currentSlotMap = ref([]);
+
+    const updateItems = (e) => {
+        currentSlotMap.value = e.newSlotItemMap.asArray;
     };
 
-    const setItems = (items) => {
-        dashboardItems.value = items;
+    const setItems = (newItems) => {
+        const allItemsMap = new Map();
+    
+        // Собираем все элементы по ID
+        [...dashboardItems.value, ...newItems].forEach(item => {
+            allItemsMap.set(item.id, item);
+        });
+    
+        // Используем сохранённый порядок, если он есть
+        let ordered = [];
+    
+        if (currentSlotMap.value.length) {
+            // Те, что есть в сохранённой карте
+            ordered = currentSlotMap.value
+                .map(slot => allItemsMap.get(slot.item))
+                .filter(Boolean);
+        }
+    
+        // Добавляем отсутствующие (новые)
+        const existingIds = new Set(ordered.map(i => i.id));
+        const remaining = Array.from(allItemsMap.values()).filter(i => !existingIds.has(i.id));
+    
+        dashboardItems.value = [...ordered, ...remaining];
     };
 
     return {
         dashboardItems,
-        updateItemSlot,
-        setItems
+        dashboardItemsList,
+        currentSlotMap,
+        setItems,
+        updateItems
     };
 });

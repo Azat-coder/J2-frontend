@@ -1,4 +1,4 @@
-import { ref, onMounted, onUnmounted, computed, watch } from 'vue';
+import { ref, onMounted, onUnmounted, computed, watch, nextTick } from 'vue';
 import { createSwapy, utils } from 'swapy';
 import { useDashboardStore } from '@/shared/stores/useDashboardStore';
 
@@ -7,24 +7,47 @@ export function useDashboardSwapy() {
     const swapy = ref(null);
     const dashboardStore = useDashboardStore();
 
-    const slotItemMap = computed(() => utils.initSlotItemMap(dashboardStore.dashboardItems, 'id'));
+    const slotItemMap = ref(
+        dashboardStore.currentSlotMap.length
+            ? dashboardStore.currentSlotMap
+            : utils.initSlotItemMap(dashboardStore.dashboardItems, 'id')
+    );
     const slottedItems = computed(() => utils.toSlottedItems(dashboardStore.dashboardItems, 'id', slotItemMap.value));
 
-    watch(dashboardStore.dashboardItems, () => utils.dynamicSwapy(swapy.value, dashboardStore.dashboardItems, 'id', slotItemMap.value, (value) => (slotItemMap.value = value)), { deep: true });
-
-    onMounted(() => {
+    const updateSwapy = async () => {    
+        const newMap = utils.initSlotItemMap(dashboardStore.dashboardItems, 'id');
+        slotItemMap.value = newMap;
+    
+        await nextTick();
+    
+        if (swapy.value) {
+            swapy.value.destroy();
+            swapy.value = null;
+        }
+    
         if (container.value) {
             swapy.value = createSwapy(container.value, {
                 manualSwap: true
             });
-
+    
             swapy.value.onSwap((event) => {
-                console.log('swap', event); 
-                requestAnimationFrame(() => { 
-                    slotItemMap.value = event.newSlotItemMap.asArray 
-                }) 
-            }) 
+                console.log('swap', event);
+                dashboardStore.updateItems(event);
+                requestAnimationFrame(() => {
+                    slotItemMap.value = event.newSlotItemMap.asArray;
+                });
+            });
         }
+    };
+
+    watch(
+        () => dashboardStore.dashboardItems,
+        () => updateSwapy(),
+        { deep: true }
+    );
+
+    onMounted(() => {
+        updateSwapy();
     });
 
     onUnmounted(() => {
