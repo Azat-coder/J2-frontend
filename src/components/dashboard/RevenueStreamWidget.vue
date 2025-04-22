@@ -12,7 +12,7 @@ function setChartData() {
     const documentStyle = getComputedStyle(document.documentElement);
 
     return {
-        labels: ['Блондинки', 'Брюнетки', 'Шатенки', 'Рыжие'],
+        labels: ['Голштинская', 'Костромская', 'Джерсейская', 'Абердин-Ангусская'],
         datasets: [
             {
                 type: 'bar',
@@ -93,7 +93,7 @@ onMounted(() => {
 
 <template>
     <div class="card">
-        <div class="font-semibold text-xl mb-4">Девушки по возрастам</div>
+        <div class="font-semibold text-xl mb-4">Телки по возрастам</div>
         <Chart type="bar" :data="chartData" :options="chartOptions" class="h-80" />
     </div>
 </template>
