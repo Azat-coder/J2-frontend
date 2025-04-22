@@ -6,20 +6,18 @@ import { useRouter, useRoute } from 'vue-router';
 const { toggleMenu } = useLayout();
 const router = useRouter();
 const route = useRoute();
-import { ref } from 'vue';
+import { useDashboardConfiguratorStore } from '@/shared/stores/useDashboardConfiguratorStore';
+import { computed } from "vue";
 
-const dashboardConfiguratorOpened = ref(false);
+const dashboardConfiguratorStore = useDashboardConfiguratorStore();
+const toggleDashboardConfigurator = () => dashboardConfiguratorStore.toggle();
 
-const openDashboardConfigurator = () => {
-    dashboardConfiguratorOpened.value = true;
-};
-
-function hideDialog() {
-    dashboardConfiguratorOpened.value = false;
-}
+const dashboardConfiguratorIcon = computed(() => {
+    return dashboardConfiguratorStore.isDashboardOpened ? "pi pi-th-large" : "pi pi-pencil"
+})
 
 const saveChanges = () => {
-    dashboardConfiguratorOpened.value = false;
+    dashboardConfiguratorStore.close();
 };
 </script>
 
@@ -66,8 +64,8 @@ const saveChanges = () => {
 
             <div class="layout-topbar-menu hidden lg:block">
                 <div class="layout-topbar-menu-content">
-                    <button type="button" class="layout-topbar-action" v-if="route.name === 'dashboard'" @click="openDashboardConfigurator">
-                        <i class="pi pi-th-large"></i>
+                    <button type="button" class="layout-topbar-action" v-if="route.name === 'dashboard'" @click="toggleDashboardConfigurator">
+                        <i :class="dashboardConfiguratorIcon"></i>
                         <span>Dashboard settings</span>
                     </button>
                     <button type="button" class="layout-topbar-action">
@@ -84,14 +82,14 @@ const saveChanges = () => {
                     </button>
                 </div>
             </div>
-            <Dialog v-model:visible="dashboardConfiguratorOpened" :style="{ width: '450px' }" header="Конфигуратор дашборда" :modal="true">
+            <!-- <Dialog v-model:visible="dashboardConfiguratorStore.isDashboardOpened" :style="{ width: '450px' }" header="Конфигуратор дашборда" :modal="true">
                 <DashboardConfigurator />
 
                 <template #footer>
-                    <Button label="Отменить" icon="pi pi-times" text @click="hideDialog" />
-                    <Button label="Сохранить изменения" icon="pi pi-check" @click="saveChanges" />
+                    <Button label="Отменить" icon="pi pi-times" text @click="dashboardConfiguratorStore.close" />
+                    <Button label="Сохранить изменения" icon="pi pi-check" @click="dashboardConfiguratorStore.close" />
                 </template>
-            </Dialog>
+            </Dialog> -->
         </div>
     </div>
 </template>

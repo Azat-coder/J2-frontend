@@ -5,6 +5,10 @@ import BestSellingWidget from '@/components/dashboard/BestSellingWidget.vue';
 import NotificationsWidget from '@/components/dashboard/NotificationsWidget.vue';
 import RecentSalesWidget from '@/components/dashboard/RecentSalesWidget.vue';
 import RevenueStreamWidget from '@/components/dashboard/RevenueStreamWidget.vue';
+import OrdersWidget from '@/components/dashboard/OrdersWidget.vue';
+import RevenueWidget from '@/components/dashboard/RevenueWidget.vue';
+import CommentsWidget from '@/components/dashboard/CommentsWidget.vue';
+import ClientsWidget from '@/components/dashboard/ClientsWidget.vue';
 
 export const useDashboardStore = defineStore('dashboard', () => {
     const dashboardItemsList = ref([
@@ -12,30 +16,46 @@ export const useDashboardStore = defineStore('dashboard', () => {
             id: 'girlsbyage',
             component: markRaw(RecentSalesWidget),
             cols: 'col-span-12 xl:col-span-6',
-            slot: 1,
         },
         {
             id: 'girlsbynationality',
             component: markRaw(BestSellingWidget),
             cols: 'col-span-12 xl:col-span-6',
-            slot: 2,
         },
         {
-            id: 'c',
+            id: 'ccdf',
             component: markRaw(RevenueStreamWidget),
             cols: 'col-span-12 xl:col-span-6',
-            slot: 3,
         },
         {
             id: 'girlsbyweight',
             component: markRaw(NotificationsWidget),
             cols: 'col-span-12 xl:col-span-6',
-            slot: 4,
-        }
+        },
+        {
+            id: 'orders',
+            component: markRaw(OrdersWidget),
+            cols: 'col-span-12 lg:col-span-6 xl:col-span-3',
+        },
+        {
+            id: 'revenue',
+            component: markRaw(RevenueWidget),
+            cols: 'col-span-12 lg:col-span-6 xl:col-span-3',
+        },
+        {
+            id: 'comments',
+            component: markRaw(CommentsWidget),
+            cols: 'col-span-12 lg:col-span-6 xl:col-span-3',
+        },
+        {
+            id: 'clients',
+            component: markRaw(ClientsWidget),
+            cols: 'col-span-12 lg:col-span-6 xl:col-span-3',
+        },
     ]);
     const dashboardItems = ref([
         {
-            id: 'c',
+            id: 'ccdf',
             component: markRaw(RevenueStreamWidget),
             cols: 'col-span-12 xl:col-span-6',
         },
@@ -55,25 +75,21 @@ export const useDashboardStore = defineStore('dashboard', () => {
     const setItems = (newItems) => {
         const allItemsMap = new Map();
     
-        // Собираем все элементы по ID
-        [...dashboardItems.value, ...newItems].forEach(item => {
+        newItems.forEach(item => {
             allItemsMap.set(item.id, item);
         });
     
-        // Используем сохранённый порядок, если он есть
         let ordered = [];
     
         if (currentSlotMap.value.length) {
-            // Те, что есть в сохранённой карте
             ordered = currentSlotMap.value
                 .map(slot => allItemsMap.get(slot.item))
                 .filter(Boolean);
         }
     
-        // Добавляем отсутствующие (новые)
         const existingIds = new Set(ordered.map(i => i.id));
         const remaining = Array.from(allItemsMap.values()).filter(i => !existingIds.has(i.id));
-    
+
         dashboardItems.value = [...ordered, ...remaining];
     };
 
@@ -84,4 +100,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
         setItems,
         updateItems
     };
+},
+{
+    persist: true,
 });

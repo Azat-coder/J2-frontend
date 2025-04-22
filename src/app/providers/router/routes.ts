@@ -11,6 +11,11 @@ export const routes = [
                 component: () => import('@/views/Dashboard.vue')
             },
             {
+                path: '/schedule',
+                name: 'schedule',
+                component: () => import('@/views/Schedule.vue')
+            },
+            {
                 path: '/settings',
                 name: 'settings',
                 component: () => import('@/views/Settings.vue')
