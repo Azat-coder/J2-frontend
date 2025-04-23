@@ -12,6 +12,9 @@ import { computed } from "vue";
 const dashboardConfiguratorStore = useDashboardConfiguratorStore();
 const toggleDashboardConfigurator = () => dashboardConfiguratorStore.toggle();
 
+import { useStyleConfig } from '@/shared/composables/useStyleConfig';
+const { getPrimary, getSurface } = useStyleConfig();
+
 const dashboardConfiguratorIcon = computed(() => {
     return dashboardConfiguratorStore.isDashboardOpened ? "pi pi-th-large" : "pi pi-pencil"
 })

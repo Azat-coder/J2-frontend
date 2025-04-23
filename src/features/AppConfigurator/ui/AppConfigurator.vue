@@ -1,7 +1,7 @@
 <script setup>
 import { useLayout } from '@/layout/composables/layout';
 import { ref } from 'vue';
-import { useStyleConfig } from '../model';
+import { useStyleConfig } from '@/shared/composables/useStyleConfig'
 import Aura from '@primeuix/themes/aura';
 import Lara from '@primeuix/themes/lara';
 import Nora from '@primeuix/themes/nora';

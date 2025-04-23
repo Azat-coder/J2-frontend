@@ -1,5 +1,5 @@
 <script setup>
-import { useStyleConfig } from '@/features/AppConfigurator/model';
+import { useStyleConfig } from '@/shared/composables/useStyleConfig';
 import { useDarkMode } from '@/features/DarkModeButton/model';
 import { onMounted, ref, watch } from 'vue';
 

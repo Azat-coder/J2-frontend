@@ -1,1 +1,0 @@
-export { useStyleConfig } from './useStyleConfig';
