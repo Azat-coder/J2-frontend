@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref, markRaw, watchEffect } from 'vue';
+import { ref, markRaw, watchEffect, watch } from 'vue';
 
 import BestSellingWidget from '@/components/dashboard/BestSellingWidget.vue';
 import NotificationsWidget from '@/components/dashboard/NotificationsWidget.vue';
@@ -43,19 +43,30 @@ export const useDashboardStore = defineStore('dashboard', () => {
     };
 
     const saveDashboardState = () => {
-        const config = currentSlotMap.value.map(({ slot, item }, index) => ({
+        const existingIds = new Set(currentSlotMap.value.map(({ item }) => item));
+        const missingItems = dashboardItems.value.filter(w => !existingIds.has(w.id));
+    
+        const augmentedSlotMap = [
+            ...currentSlotMap.value,
+            ...missingItems.map((w, index) => ({
+                slot: `auto_${w.id}`,
+                item: w.id
+            }))
+        ];
+    
+        const config = augmentedSlotMap.map(({ slot, item }, index) => ({
             id: item,
             slot,
             order: index,
             visible: true
         }));
+    
         localStorage.setItem('dashboard_config', JSON.stringify(config));
     };
 
     const loadDashboardState = () => {
         const raw = localStorage.getItem('dashboard_config');
         if (!raw) {
-            console.log('[loadDashboardState] Нет сохранённого состояния');
             return;
         }
 
@@ -80,6 +91,21 @@ export const useDashboardStore = defineStore('dashboard', () => {
             console.warn('Ошибка парсинга dashboard_config:', e);
         }
     };
+
+    watch(
+        dashboardItems,
+        (newVal, oldVal) => {
+            if (!isInitialized.value) return;
+        
+            const newIds = newVal.map(i => i.id).join(',');
+            const oldIds = oldVal.map(i => i.id).join(',');
+        
+            if (newIds !== oldIds) {
+                saveDashboardState();
+            }
+        },
+        { deep: true }
+    );
 
     watchEffect(() => {
         if (!isInitialized.value && dashboardItemsList.value.length) {
