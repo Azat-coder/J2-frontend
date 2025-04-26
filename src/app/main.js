@@ -1,6 +1,8 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import { pinia, router } from './providers';
+import VueDraggableGrid from '@noction/vue-draggable-grid'
+import '@noction/vue-draggable-grid/styles'
 
 import Aura from '@primeuix/themes/aura';
 import PrimeVue from 'primevue/config';
@@ -21,6 +23,7 @@ app.use(PrimeVue, {
         }
     }
 });
+app.use(VueDraggableGrid)
 app.use(ToastService);
 app.use(ConfirmationService);
 

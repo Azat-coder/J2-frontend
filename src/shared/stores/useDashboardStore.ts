@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref, markRaw, watchEffect, watch } from 'vue';
+import { ref, markRaw, watchEffect } from 'vue';
 
 import BestSellingWidget from '@/components/dashboard/BestSellingWidget.vue';
 import NotificationsWidget from '@/components/dashboard/NotificationsWidget.vue';
@@ -11,104 +11,67 @@ import CommentsWidget from '@/components/dashboard/CommentsWidget.vue';
 import ClientsWidget from '@/components/dashboard/ClientsWidget.vue';
 
 const allWidgets = [
-    { id: 'girlsbyage', component: markRaw(RecentSalesWidget), cols: 'col-span-12 xl:col-span-6' },
-    { id: 'girlsbynationality', component: markRaw(BestSellingWidget), cols: 'col-span-12 xl:col-span-6' },
-    { id: 'ccdf', component: markRaw(RevenueStreamWidget), cols: 'col-span-12 xl:col-span-6' },
-    { id: 'girlsbyweight', component: markRaw(NotificationsWidget), cols: 'col-span-12 xl:col-span-6' },
-    { id: 'orders', component: markRaw(OrdersWidget), cols: 'col-span-12 lg:col-span-6 xl:col-span-3' },
-    { id: 'revenue', component: markRaw(RevenueWidget), cols: 'col-span-12 lg:col-span-6 xl:col-span-3' },
-    { id: 'comments', component: markRaw(CommentsWidget), cols: 'col-span-12 lg:col-span-6 xl:col-span-3' },
-    { id: 'clients', component: markRaw(ClientsWidget), cols: 'col-span-12 lg:col-span-6 xl:col-span-3' },
+    { id: 'girlsbyage', component: markRaw(RecentSalesWidget) },
+    { id: 'girlsbynationality', component: markRaw(BestSellingWidget) },
+    { id: 'ccdf', component: markRaw(RevenueStreamWidget) },
+    { id: 'girlsbyweight', component: markRaw(NotificationsWidget) },
+    { id: 'orders', component: markRaw(OrdersWidget) },
+    { id: 'revenue', component: markRaw(RevenueWidget) },
+    { id: 'comments', component: markRaw(CommentsWidget) },
+    { id: 'clients', component: markRaw(ClientsWidget) },
 ];
 
 export const useDashboardStore = defineStore('dashboard', () => {
-    const dashboardItemsList = ref(allWidgets);
-    const dashboardItems = ref([]);
-    const currentSlotMap = ref([]);
+    const dashboardItems = ref(allWidgets);
+    const dashboardLayout = ref([
+        { id: 'girlsbyage', x: 0, y: 0, w: 4, h: 2 },
+        { id: 'girlsbynationality', x: 4, y: 0, w: 4, h: 2 },
+        { id: 'ccdf', x: 8, y: 0, w: 4, h: 2 },
+        { id: 'girlsbyweight', x: 0, y: 2, w: 6, h: 2 },
+    ]);
     const isInitialized = ref(false);
 
-    const updateItems = (e) => {
-        currentSlotMap.value = e.newSlotItemMap.asArray;
-        saveDashboardState();
-    };
-
-    const setItems = (newItems) => {
-        const allItemsMap = new Map(newItems.map(item => [item.id, item]));
-
-        const orderedItems = currentSlotMap.value.map(({ item }) => allItemsMap.get(item)).filter(Boolean);
-        const orderedIds = new Set(orderedItems.map(i => i.id));
-        const remaining = newItems.filter(i => !orderedIds.has(i.id));
-
-        dashboardItems.value = [...orderedItems, ...remaining];
-    };
-
     const saveDashboardState = () => {
-        const existingIds = new Set(currentSlotMap.value.map(({ item }) => item));
-        const missingItems = dashboardItems.value.filter(w => !existingIds.has(w.id));
-    
-        const augmentedSlotMap = [
-            ...currentSlotMap.value,
-            ...missingItems.map((w, index) => ({
-                slot: `auto_${w.id}`,
-                item: w.id
-            }))
-        ];
-    
-        const config = augmentedSlotMap.map(({ slot, item }, index) => ({
-            id: item,
-            slot,
-            order: index,
-            visible: true
+        const config = dashboardLayout.value.map(item => ({
+            id: item.id,
+            x: item.x,
+            y: item.y,
+            w: item.w,
+            h: item.h,
         }));
-    
-        localStorage.setItem('dashboard_config', JSON.stringify(config));
+
+        console.log('[saveDashboardState] Сохраняем конфиг:', config);
+        localStorage.setItem('dashboard_layout', JSON.stringify(config));
     };
 
     const loadDashboardState = () => {
-        const raw = localStorage.getItem('dashboard_config');
+        const raw = localStorage.getItem('dashboard_layout');
         if (!raw) {
+            console.log('[loadDashboardState] Нет сохранённого состояния');
             return;
         }
 
         try {
             const config = JSON.parse(raw);
-            const widgetMap = new Map(allWidgets.map(w => [w.id, w]));
+            console.log('[loadDashboardState] Загружаем конфиг:', config);
 
-            const visibleWidgets = config
-                .filter(w => w.visible)
-                .sort((a, b) => a.order - b.order);
-
-            currentSlotMap.value = visibleWidgets.map(w => ({
-                slot: w.slot,
-                item: w.id
+            dashboardLayout.value = config.map(item => ({
+                ...item,
             }));
 
-            dashboardItems.value = visibleWidgets
-                .map(w => widgetMap.get(w.id))
-                .filter(Boolean);
-
         } catch (e) {
-            console.warn('Ошибка парсинга dashboard_config:', e);
+            console.warn('Ошибка парсинга dashboard_layout:', e);
         }
     };
 
-    watch(
-        dashboardItems,
-        (newVal, oldVal) => {
-            if (!isInitialized.value) return;
-        
-            const newIds = newVal.map(i => i.id).join(',');
-            const oldIds = oldVal.map(i => i.id).join(',');
-        
-            if (newIds !== oldIds) {
-                saveDashboardState();
-            }
-        },
-        { deep: true }
-    );
+    const updateLayout = (newLayout) => {
+        dashboardLayout.value = newLayout;
+        saveDashboardState();
+    };
 
     watchEffect(() => {
-        if (!isInitialized.value && dashboardItemsList.value.length) {
+        if (!isInitialized.value) {
+            console.log('[watchEffect] Инициализация');
             loadDashboardState();
             isInitialized.value = true;
         }
@@ -116,11 +79,9 @@ export const useDashboardStore = defineStore('dashboard', () => {
 
     return {
         dashboardItems,
-        dashboardItemsList,
-        currentSlotMap,
-        setItems,
-        updateItems,
+        dashboardLayout,
+        updateLayout,
         saveDashboardState,
-        loadDashboardState
+        loadDashboardState,
     };
 });

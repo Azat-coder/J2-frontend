@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="card mb-0">
+        <div class="w-full h-full">
+            <div class="card mb-0 w-full h-full">
             <div class="flex justify-between mb-4">
                 <div>
                     <span class="block text-muted-color font-medium mb-4">Клиенты</span>
