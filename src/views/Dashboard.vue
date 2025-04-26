@@ -1,35 +1,34 @@
-<script setup>
-import BestSellingWidget from '@/components/dashboard/BestSellingWidget.vue';
-import NotificationsWidget from '@/components/dashboard/NotificationsWidget.vue';
-import RecentSalesWidget from '@/components/dashboard/RecentSalesWidget.vue';
-import RevenueStreamWidget from '@/components/dashboard/RevenueStreamWidget.vue';
-import OrdersWidget from '@/components/dashboard/OrdersWidget.vue';
-import RevenueWidget from '@/components/dashboard/RevenueWidget.vue';
-import CommentsWidget from '@/components/dashboard/CommentsWidget.vue';
-import ClientsWidget from '@/components/dashboard/ClientsWidget.vue';
-import { ref, markRaw } from 'vue'
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { useDashboardStore } from '@/shared/stores/useDashboardStore'
 
-const layout = ref([
-  { h: 12, id: 0, w: 4, x: 0, y: 0, component: markRaw(RecentSalesWidget) },
-  { h: 12, id: 1, w: 4, x: 2, y: 0, component: markRaw(BestSellingWidget) },
-  { h: 10, id: 2, w: 4, x: 4, y: 0, component: markRaw(RevenueStreamWidget) },
-  { h: 15, id: 3, w: 6, x: 0, y: 2, component: markRaw(NotificationsWidget) },
-  { h: 4, id: 4, w: 4, x: 2, y: 2, component: markRaw(OrdersWidget) },
-  { h: 4, id: 5, w: 4, x: 4, y: 2, component: markRaw(RevenueWidget) },
-  { h: 4, id: 6, w: 4, x: 0, y: 4, component: markRaw(CommentsWidget) },
-  { h: 4, id: 7, w: 4, x: 2, y: 4, component: markRaw(ClientsWidget) },
-])
+const dashboard = useDashboardStore()
+
+function handleMove(event) {
+  console.log('[handleMove]', event)
+  dashboard.saveDashboardState()
+}
+
+function handleResize(event) {
+  console.log('[handleResize]', event)
+  dashboard.saveDashboardState()
+}
+
+function handleMoveEnd(newLayout) {
+  console.log('[handleMoveEnd]', newLayout)
+  dashboard.handleMoveEnd(newLayout)
+}
 </script>
 
 <template>
   <grid-layout
-    v-model:layout="layout"
+    v-model:layout="dashboard.dashboardLayout"
     :col-num="12"
     :row-height="30"
   >
     <template #default="{ gridItemProps }">
       <grid-item
-        v-for="item in layout"
+        v-for="item in dashboard.dashboardLayout"
         v-bind="gridItemProps"
         :id="item.id"
         :key="item.id"
@@ -37,8 +36,13 @@ const layout = ref([
         :y="item.y"
         :w="item.w"
         :h="item.h"
+        @noc-resize="handleResize"
+        @noc-move="handleMove"
+        @noc-move-end="handleMoveEnd"
       >
-        <component :is="item.component" />
+        <component
+          :is="dashboard.dashboardItems.find(w => w.id === item.id)?.component"
+        />
       </grid-item>
     </template>
   </grid-layout>
