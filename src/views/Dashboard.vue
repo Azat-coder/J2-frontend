@@ -40,7 +40,7 @@ function handleMoveEnd(newLayout) {
             @noc-move-end="handleMoveEnd"
         >
             <component
-            :is="dashboard.dashboardItems.find(w => w.id === item.id)?.component"
+                :is="dashboard.dashboardItems.find(w => w.id === item.id)?.component"
             />
         </grid-item>
         </template>

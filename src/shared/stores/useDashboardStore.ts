@@ -89,18 +89,18 @@ const loadDashboardState = () => {
         const { i, x, y, w, h } = e;
         
         console.log(`[handleMoveEnd] Перед сохранением: ${i}`, {
-        x: Math.round(x),
-        y: Math.round(y),
-        w: Math.round(w),
-        h: Math.round(h)
+            x: Math.round(x),
+            y: Math.round(y),
+            w: Math.round(w),
+            h: Math.round(h)
         });
     
         const item = dashboardLayout.value.find(item => item.id === i);
         if (item) {
-        item.x = Math.round(x);
-        item.y = Math.round(y);
-        item.w = Math.round(w);
-        item.h = Math.round(h);
+            item.x = Math.round(x);
+            item.y = Math.round(y);
+            item.w = Math.round(w);
+            item.h = Math.round(h);
         }
     
         // Сохраняем с округлением
@@ -112,26 +112,26 @@ const loadDashboardState = () => {
     const resetLayout = () => {
         console.log('[resetLayout] Сброс до дефолта')
         dashboardLayout.value = [
-        { id: 'girlsbyage', x: 0, y: 0, w: 4, h: 2 },
-        { id: 'girlsbynationality', x: 4, y: 0, w: 4, h: 2 },
-        { id: 'ccdf', x: 8, y: 0, w: 4, h: 2 },
-        { id: 'girlsbyweight', x: 0, y: 2, w: 6, h: 2 },
+            { id: 'girlsbyage', x: 0, y: 0, w: 4, h: 2 },
+            { id: 'girlsbynationality', x: 4, y: 0, w: 4, h: 2 },
+            { id: 'ccdf', x: 8, y: 0, w: 4, h: 2 },
+            { id: 'girlsbyweight', x: 0, y: 2, w: 6, h: 2 },
         ]
         saveDashboardState()
     }
 
     watchEffect(() => {
         if (!isInitialized.value) {
-        console.log('[watchEffect] Инициализация')
-        loadDashboardState()
-        isInitialized.value = true
+            console.log('[watchEffect] Инициализация')
+            loadDashboardState()
+            isInitialized.value = true
         }
     })
 
     watch(
         () => dashboardLayout.value,
         () => {
-        saveDashboardState()
+            saveDashboardState()
         },
         { deep: true }
     )
