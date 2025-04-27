@@ -1,33 +1,33 @@
 <script setup lang="ts">
-import { useDashboardStore } from '@/shared/stores/useDashboardStore'
+import { useDashboard } from '@/shared/composables/dashboard/useDashboard'
 
-const dashboard = useDashboardStore()
+const { dashboardLayout, saveDashboardState, handleMoveEnd, getWidgetComponentById} = useDashboard();
 
 function handleMove(event) {
     console.log('[handleMove]', event)
-    dashboard.saveDashboardState()
+    saveDashboardState()
 }
 
 function handleResize(event) {
     console.log('[handleResize]', event)
-    dashboard.saveDashboardState()
+    saveDashboardState()
 }
 
-function handleMoveEnd(newLayout) {
+function moveEnd(newLayout) {
     console.log('[handleMoveEnd]', newLayout)
-    dashboard.handleMoveEnd(newLayout)
+    handleMoveEnd(newLayout)
 }
 </script>
 
 <template>
     <grid-layout
-        v-model:layout="dashboard.dashboardLayout"
+        v-model:layout="dashboardLayout"
         :col-num="12"
         :row-height="30"
     >
         <template #default="{ gridItemProps }">
         <grid-item
-            v-for="item in dashboard.dashboardLayout"
+            v-for="item in dashboardLayout"
             v-bind="gridItemProps"
             :id="item.id"
             :key="item.id"
@@ -37,10 +37,10 @@ function handleMoveEnd(newLayout) {
             :h="item.h"
             @noc-resize="handleResize"
             @noc-move="handleMove"
-            @noc-move-end="handleMoveEnd"
+            @noc-move-end="moveEnd"
         >
             <component
-                :is="dashboard.dashboardItems.find(w => w.id === item.id)?.component"
+                :is="getWidgetComponentById(item.id)"
             />
         </grid-item>
         </template>
