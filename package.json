@@ -1,7 +1,7 @@
 {
     "name": "jarvis",
     "homepage": "https://Azat-coder.github.io/J2-frontend/",
-    "version": "4.3.0",
+    "version": "1.0.1",
     "scripts": {
         "dev": "vite",
         "build": "vite build",
