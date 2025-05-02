@@ -24,6 +24,7 @@ function moveEnd(newLayout) {
         v-model:layout="dashboardLayout"
         :col-num="12"
         :row-height="30"
+        :responsive="true"
     >
         <template #default="{ gridItemProps }">
         <grid-item
@@ -35,6 +36,7 @@ function moveEnd(newLayout) {
             :y="item.y"
             :w="item.w"
             :h="item.h"
+            style="overflow: hidden;"
             @noc-resize="handleResize"
             @noc-move="handleMove"
             @noc-move-end="moveEnd"

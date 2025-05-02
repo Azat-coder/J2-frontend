@@ -8,6 +8,7 @@ import OrdersWidget from '@/components/dashboard/OrdersWidget.vue'
 import RevenueWidget from '@/components/dashboard/RevenueWidget.vue'
 import CommentsWidget from '@/components/dashboard/CommentsWidget.vue'
 import ClientsWidget from '@/components/dashboard/ClientsWidget.vue'
+import GirlsAIPicsWidget from '@/components/dashboard/GirlsAIPicsWidget.vue'
 
 export const useMainDashboardStore = createDashboardStore({
   storageKey: 'main_dashboard_layout',
@@ -20,5 +21,6 @@ export const useMainDashboardStore = createDashboardStore({
         { id: 'revenue', component: markRaw(RevenueWidget), initialSizes: { w: 4, h: 4 } },
         { id: 'comments', component: markRaw(CommentsWidget), initialSizes: { w: 4, h: 4 } },
         { id: 'clients', component: markRaw(ClientsWidget), initialSizes: { w: 4, h: 4 } },
+        { id: 'girlsAiPics', component: markRaw(GirlsAIPicsWidget),initialSizes: {w: 7,h: 27,} },
   ]
 })
