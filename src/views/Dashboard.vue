@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useDashboard } from '@/shared/composables/dashboard/useDashboard'
+import { useDashboardConfiguratorStore } from '@/shared/stores/useDashboardConfiguratorStore';
 
 const { dashboardLayout, saveDashboardState, handleMoveEnd, getWidgetComponentById} = useDashboard();
+const dashboardConfiguratorStore = useDashboardConfiguratorStore();
 
 function handleMove(event) {
     console.log('[handleMove]', event)
@@ -24,6 +26,8 @@ function moveEnd(newLayout) {
         v-model:layout="dashboardLayout"
         :col-num="12"
         :row-height="30"
+        :isDraggable="dashboardConfiguratorStore.isDashboardOpened"
+        :isResizable="dashboardConfiguratorStore.isDashboardOpened"
         :responsive="true"
     >
         <template #default="{ gridItemProps }">
