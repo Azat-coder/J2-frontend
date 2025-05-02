@@ -12,13 +12,13 @@
 </template>
 
 <script setup lang="ts">
-import { useDashboardStore } from '@/shared/stores/useDashboardStore';
+import { useDashboard } from '@/shared/composables/dashboard/useDashboard';
 import { nextTick, onMounted, ref, watch } from 'vue';
 
 const treeTableValue = ref(null);
 const selectedTreeTableValue = ref(null);
 
-const dashboardStore = useDashboardStore();
+const dashboardStore = useDashboard();
 const isUpdatingFromStore = ref(false);
 
 onMounted(() => {
@@ -137,8 +137,8 @@ onMounted(() => {
 
     nextTick(() => {
         console.log('Инициализация данных дерева:', treeTableValue.value);
-        syncSelectedFromDashboard(dashboardStore.dashboardLayout);
-        processItems(dashboardStore.dashboardLayout);
+        syncSelectedFromDashboard(dashboardStore.dashboardLayout.value);
+        processItems(dashboardStore.dashboardLayout.value);
     });
 });
 
@@ -167,21 +167,20 @@ watch(selectedTreeTableValue, (value) => {
     }
 
     selectedIds.forEach((id) => {
-        if (!dashboardStore.dashboardLayout.some(item => item.id === id)) {
-            const widget = dashboardStore.dashboardItems.find(item => item.id === id);
+        if (!dashboardStore.dashboardLayout.value.some(item => item.id === id)) {
+            const widget = dashboardStore.dashboardItems.value.find(item => item.id === id);
             console.log("widget", widget);
             if (widget) {
-                dashboardStore.dashboardLayout.push({ id: widget.id, x: 0, y: 0, w: widget.initialSizes.w, h: widget.initialSizes.h });
+                dashboardStore.addWidgetToLayout(widget);
             }
         }
     });
 
-    dashboardStore.dashboardLayout = dashboardStore.dashboardLayout.filter(item =>
-        selectedIds.includes(item.id)
-    );
+    dashboardStore.updateDashboardLayout(selectedIds);
 }, { deep: true });
 
 const processItems = (items) => {
+    console.log("items", items);
     const selected = {};
 
     const markNode = (node) => {
@@ -223,7 +222,7 @@ const processItems = (items) => {
 };
 
 watch(
-    () => dashboardStore.dashboardLayout,
+    () => dashboardStore.dashboardLayout.value,
     processItems,
     { immediate: true, deep: true }
 );
