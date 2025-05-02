@@ -14,7 +14,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="card">
+    <div class="card w-full h-full">
         <div class="font-semibold text-xl mb-4">Recent Sales</div>
         <DataTable :value="products" :rows="5" :paginator="true" responsiveLayout="scroll">
             <Column style="width: 15%" header="Image">

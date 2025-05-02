@@ -1,18 +1,50 @@
-<script setup>
-import { useDashboardSwapy } from '@/shared/composables/useDashboardSwapy';
+<script setup lang="ts">
+import { useDashboard } from '@/shared/composables/dashboard/useDashboard'
 
-const { container, slottedItems } = useDashboardSwapy();
+const { dashboardLayout, saveDashboardState, handleMoveEnd, getWidgetComponentById} = useDashboard();
+
+function handleMove(event) {
+    console.log('[handleMove]', event)
+    saveDashboardState()
+}
+
+function handleResize(event) {
+    console.log('[handleResize]', event)
+    saveDashboardState()
+}
+
+function moveEnd(newLayout) {
+    console.log('[handleMoveEnd]', newLayout)
+    handleMoveEnd(newLayout)
+}
 </script>
 
 <template>
-    <div class="grid grid-cols-12 gap-8" ref="container">
-        <div 
-            v-for="{ slotId, itemId, item: item } in slottedItems" 
-            :key="slotId" 
-            :class="item.cols" 
-            :data-swapy-slot="slotId"
+    <grid-layout
+        v-model:layout="dashboardLayout"
+        :col-num="12"
+        :row-height="30"
+        :responsive="true"
+    >
+        <template #default="{ gridItemProps }">
+        <grid-item
+            v-for="item in dashboardLayout"
+            v-bind="gridItemProps"
+            :id="item.id"
+            :key="item.id"
+            :x="item.x"
+            :y="item.y"
+            :w="item.w"
+            :h="item.h"
+            style="overflow: hidden;"
+            @noc-resize="handleResize"
+            @noc-move="handleMove"
+            @noc-move-end="moveEnd"
         >
-            <component :is="item.component" :data-swapy-item="itemId" />
-        </div>
-    </div>
+            <component
+                :is="getWidgetComponentById(item.id)"
+            />
+        </grid-item>
+        </template>
+    </grid-layout>
 </template>
