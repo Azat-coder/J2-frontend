@@ -69,15 +69,15 @@ const saveChanges = () => {
                 <div class="layout-topbar-menu-content">
                     <button type="button" class="layout-topbar-action" v-if="route.name === 'dashboard'" @click="toggleDashboardConfigurator">
                         <i :class="dashboardConfiguratorIcon"></i>
-                        <span>Dashboard settings</span>
+                        <span>Настройки дашборда</span>
                     </button>
                     <button type="button" class="layout-topbar-action">
                         <i class="pi pi-inbox"></i>
-                        <span>Messages</span>
+                        <span>Сообщения</span>
                     </button>
                     <button type="button" class="layout-topbar-action">
                         <i class="pi pi-user"></i>
-                        <span>Profile</span>
+                        <span>Профиль</span>
                     </button>
                     <button type="button" class="layout-topbar-action" @click="router.push({ name: 'settings' })">
                         <i class="pi pi-cog"></i>

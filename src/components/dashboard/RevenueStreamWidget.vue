@@ -51,7 +51,8 @@ function setChartOptions() {
 
     return {
         maintainAspectRatio: false,
-        aspectRatio: 0.8,
+        // aspectRatio: 0.8,
+        responsive: true,
         scales: {
             x: {
                 stacked: true,
@@ -92,7 +93,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="card">
+    <div class="card w-full h-full">
         <div class="font-semibold text-xl mb-4">Телки по возрастам</div>
         <Chart type="bar" :data="chartData" :options="chartOptions" class="h-80" />
     </div>

@@ -1,9 +1,25 @@
+<template>
+    <div v-if="treeTableValue && treeTableValue.length">
+        <TreeTable :value="treeTableValue" selectionMode="checkbox" v-model:selectionKeys="selectedTreeTableValue">
+            <Column field="name" header="Раздел" :expander="true"></Column>
+            <Column field="size" header="Размер"></Column>
+            <Column field="type" header="Тип"></Column>
+        </TreeTable>
+    </div>
+    <div v-else>
+        <p>Данные для дерева не загружены.</p>
+    </div>
+</template>
+
 <script setup lang="ts">
-import { useDashboardStore } from '@/shared/stores/useDashboardStore';
+import { useDashboard } from '@/shared/composables/dashboard/useDashboard';
 import { nextTick, onMounted, ref, watch } from 'vue';
 
 const treeTableValue = ref(null);
 const selectedTreeTableValue = ref(null);
+
+const dashboardStore = useDashboard();
+const isUpdatingFromStore = ref(false);
 
 onMounted(() => {
     treeTableValue.value = [
@@ -29,7 +45,7 @@ onMounted(() => {
                                 name: 'Коровы по возрастам',
                                 id: "girlsbyage",
                                 size: 'Средний',
-                                type: 'График'
+                                type: 'График',
                             }
                         },
                         {
@@ -38,7 +54,7 @@ onMounted(() => {
                                 name: 'Коровы по весу',
                                 id: "girlsbynationality",
                                 size: 'Средний',
-                                type: 'График'
+                                type: 'График',
                             }
                         },
                         {
@@ -47,7 +63,7 @@ onMounted(() => {
                                 name: 'Коровы по дням доения',
                                 id: "ccdf",
                                 size: 'Средний',
-                                type: 'График'
+                                type: 'График',
                             }
                         },
                         {
@@ -56,7 +72,7 @@ onMounted(() => {
                                 name: 'Коровы по весу',
                                 id: "girlsbyweight",
                                 size: 'Средний',
-                                type: 'График'
+                                type: 'График',
                             }
                         }
                     ]
@@ -85,7 +101,7 @@ onMounted(() => {
                         name: 'Заказы',
                         size: 'Маленький',
                         type: 'Виджет',
-                        id: 'orders'
+                        id: 'orders',
                     }
                 },
                 {
@@ -117,18 +133,33 @@ onMounted(() => {
                 }
             ]
         },
+        {
+            key: '2',
+            data: {
+                name: 'Экспериментальные разделы',
+                size: 'Маленький',
+                type: 'Виджет'
+            },
+            children: [
+                {
+                    key: '2-0-0',
+                    data: {
+                        name: 'Генератор фото девушек',
+                        size: 'Маленький',
+                        type: 'Виджет',
+                        id: 'girlsAiPics',
+                    }
+                },
+            ]
+        },
     ];
 
     nextTick(() => {
-        syncSelectedFromDashboard(dashboardStore.dashboardItems);
-        processItems(dashboardStore.dashboardItems);
+        console.log('Инициализация данных дерева:', treeTableValue.value);
+        syncSelectedFromDashboard(dashboardStore.dashboardLayout.value);
+        processItems(dashboardStore.dashboardLayout.value);
     });
 });
-
-
-const dashboardStore = useDashboardStore();
-
-const isUpdatingFromStore = ref(false);
 
 watch(selectedTreeTableValue, (value) => {
     if (isUpdatingFromStore.value) return;
@@ -141,12 +172,12 @@ watch(selectedTreeTableValue, (value) => {
 
     const traverse = (nodes) => {
         for (const node of nodes) {
-        if (selectedLeafKeys.includes(node.key)) {
-            selectedIds.push(node.data.id);
-        }
-        if (node.children) {
-            traverse(node.children);
-        }
+            if (selectedLeafKeys.includes(node.key)) {
+                selectedIds.push(node.data.id);
+            }
+            if (node.children) {
+                traverse(node.children);
+            }
         }
     };
 
@@ -154,14 +185,21 @@ watch(selectedTreeTableValue, (value) => {
         traverse(treeTableValue.value);
     }
 
-    const newItems = dashboardStore.dashboardItemsList.filter((item) =>
-        selectedIds.includes(item.id)
-    );
+    selectedIds.forEach((id) => {
+        if (!dashboardStore.dashboardLayout.value.some(item => item.id === id)) {
+            const widget = dashboardStore.dashboardItems.value.find(item => item.id === id);
+            console.log("widget", widget);
+            if (widget) {
+                dashboardStore.addWidgetToLayout(widget);
+            }
+        }
+    });
 
-    dashboardStore.setItems(newItems);
+    dashboardStore.updateDashboardLayout(selectedIds);
 }, { deep: true });
 
 const processItems = (items) => {
+    console.log("items", items);
     const selected = {};
 
     const markNode = (node) => {
@@ -191,21 +229,19 @@ const processItems = (items) => {
         }
     };
 
-
     if (treeTableValue.value) {
         treeTableValue.value.forEach(markNode);
     }
 
     isUpdatingFromStore.value = true;
-
     selectedTreeTableValue.value = selected;
     nextTick(() => {
         isUpdatingFromStore.value = false;
     });
-}
+};
 
 watch(
-    () => dashboardStore.dashboardItems,
+    () => dashboardStore.dashboardLayout.value,
     processItems,
     { immediate: true, deep: true }
 );
@@ -235,11 +271,3 @@ const syncSelectedFromDashboard = (items) => {
     });
 };
 </script>
-
-<template>
-    <TreeTable :value="treeTableValue" selectionMode="checkbox" v-model:selectionKeys="selectedTreeTableValue">
-        <Column field="name" header="Раздел" :expander="true"></Column>
-        <Column field="size" header="Размер"></Column>
-        <Column field="type" header="Тип"></Column>
-    </TreeTable>
-</template>
