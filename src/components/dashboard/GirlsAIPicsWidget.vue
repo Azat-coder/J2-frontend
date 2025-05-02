@@ -13,9 +13,25 @@ const fullscreen = ref(false);
 const toast = useToast();
 const images = useStorage("girlPicsImages", [
     {
-        itemImageSrc: 'https://blob.haxed.net/ZlbuSGird3.png',
-        thumbnailImageSrc: 'https://blob.haxed.net/ZlbuSGird3.png',
+        "itemImageSrc": "https://blob.haxed.net/2Vfbevp7YG.png",
+        "thumbnailImageSrc": "https://blob.haxed.net/2Vfbevp7YG.png"
     },
+    {
+        "itemImageSrc": "https://blob.haxed.net/iREuv2BIii.png",
+        "thumbnailImageSrc": "https://blob.haxed.net/iREuv2BIii.png"
+    },
+    {
+        "itemImageSrc": "https://blob.haxed.net/86Apd6lQMf.png",
+        "thumbnailImageSrc": "https://blob.haxed.net/86Apd6lQMf.png"
+    },
+    {
+        "itemImageSrc": "https://blob.haxed.net/CIjjYxiPdN.png",
+        "thumbnailImageSrc": "https://blob.haxed.net/CIjjYxiPdN.png"
+    },
+    {
+        "itemImageSrc": "https://blob.haxed.net/ZlbuSGird3.png",
+        "thumbnailImageSrc": "https://blob.haxed.net/ZlbuSGird3.png"
+    }
 ]);
 
 const galleriaResponsiveOptions = ref([

@@ -1,17 +1,21 @@
 {
     "name": "jarvis",
+    "homepage": "https://Azat-coder.github.io/J2-frontend/",
     "version": "4.3.0",
     "scripts": {
         "dev": "vite",
         "build": "vite build",
         "preview": "vite preview",
-        "lint": "eslint --fix . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
+        "lint": "eslint --fix . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d src/app/dist --repo=https://github.com/Azat-coder/J2-frontend.git"
     },
     "dependencies": {
         "@noction/vue-draggable-grid": "^1.11.0",
         "@primeuix/themes": "^1.0.0",
         "@vueuse/core": "^13.1.0",
         "chart.js": "3.3.2",
+        "gh-pages": "^6.3.0",
         "pinia": "^3.0.2",
         "pinia-plugin-persistedstate": "^4.2.0",
         "primeicons": "^7.0.0",
