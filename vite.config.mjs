@@ -7,7 +7,7 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
     root: 'src/app',
-    // base: '/J2-frontend/',
+    base: '/J2-frontend/',
     optimizeDeps: {
         noDiscovery: true
     },
