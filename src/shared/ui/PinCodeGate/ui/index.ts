@@ -1,0 +1,1 @@
+export { default as PinCodeGate } from './PinCodeGate.vue'
