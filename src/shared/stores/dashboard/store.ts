@@ -1,14 +1,14 @@
 import { defineStore } from 'pinia'
 import { ref, markRaw } from 'vue'
 
-import BestSellingWidget from '@/components/dashboard/BestSellingWidget.vue'
-import NotificationsWidget from '@/components/dashboard/NotificationsWidget.vue'
-import RecentSalesWidget from '@/components/dashboard/RecentSalesWidget.vue'
-import RevenueStreamWidget from '@/components/dashboard/RevenueStreamWidget.vue'
-import OrdersWidget from '@/components/dashboard/OrdersWidget.vue'
-import RevenueWidget from '@/components/dashboard/RevenueWidget.vue'
-import CommentsWidget from '@/components/dashboard/CommentsWidget.vue'
-import ClientsWidget from '@/components/dashboard/ClientsWidget.vue'
+import BestSellingWidget from '@/entities/dashboard/BestSellingWidget.vue'
+import NotificationsWidget from '@/entities/dashboard/NotificationsWidget.vue'
+import RecentSalesWidget from '@/entities/dashboard/RecentSalesWidget.vue'
+import RevenueStreamWidget from '@/entities/dashboard/RevenueStreamWidget.vue'
+import OrdersWidget from '@/entities/dashboard/OrdersWidget.vue'
+import RevenueWidget from '@/entities/dashboard/RevenueWidget.vue'
+import CommentsWidget from '@/entities/dashboard/CommentsWidget.vue'
+import ClientsWidget from '@/entities/dashboard/ClientsWidget.vue'
 
 const allWidgets = [
     { id: 'girlsbyage', component: markRaw(RecentSalesWidget), initialSizes: { w: 4, h: 11 } },

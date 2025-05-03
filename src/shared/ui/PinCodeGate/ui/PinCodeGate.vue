@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { usePinCode } from '../model'
-import { defineProps, watch, ref } from 'vue'
+import { watch, ref } from 'vue'
 
 const props = defineProps<{
   pin: string
