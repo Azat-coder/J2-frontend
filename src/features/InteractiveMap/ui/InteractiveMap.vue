@@ -1,8 +1,8 @@
 <template>
-  <div style="position: relative; width: 100%; height: 800px;">
+  <div style="position: relative; width: 100%; height: 600px;">
     <svg
       width="100%"
-      height="800"
+      height="600"
       viewBox="0 0 800 400"
       xmlns="http://www.w3.org/2000/svg"
       @mousemove="onMouseMove"
@@ -18,6 +18,7 @@
           @click="onCountryClick(country.id)"
           @mouseover="onCountryHover(country.id, country.name)"
           @mouseleave="onCountryHover(null, null)"
+          @contextmenu="(e) => handleContextMenuClick(e, country.id)"
           :style="{
             cursor: isClickable(country.id) ? 'pointer' : 'default',
             pointerEvents: isClickable(country.id) ? 'auto' : 'none'
@@ -25,6 +26,8 @@
         />
       </g>
     </svg>
+
+    <ContextMenu ref="contextMenu" :model="contextMenuItems" />
 
     <div
       v-if="tooltip.visible"
@@ -57,8 +60,30 @@ const hoveredCountry = ref(null)
 const selectedCountry = ref(null)
 const tooltip = ref({ visible: false, x: 0, y: 0, name: '' })
 const clickableCountries = Object.values(iso2to3);
+const contextMenu = ref(null);
 
-console.log('Компонент загружен')
+const contextMenuItems = ref([
+    {
+        label: 'Визовая информация',
+        icon: 'pi pi-globe',
+        command: handleVisaInformation,
+    },
+    {
+        label: 'Стоимость жизни',
+        icon: 'pi pi-wallet'
+    },
+    {
+        label: 'Погода',
+        icon: 'pi pi-sun'
+    },
+    {
+        separator: true
+    },
+    {
+        label: 'Добавить к сравнению',
+        icon: 'pi pi-chart-bar'
+    }
+]);
 
 function isClickable(isoCode) {
   return isoCode && clickableCountries.includes(isoCode)
@@ -84,14 +109,23 @@ function onCountryClick(isoCode) {
   console.log('click:', isoCode)
   if (isClickable(isoCode)) {
     selectedCountry.value = isoCode
-    console.log('selectedCountry set to:', selectedCountry.value)
     nextTick(() => fetchCountryInfo(isoCode))
   }
 }
 
+function handleContextMenuClick(event, isoCode) {
+  contextMenu.value.show(event);
+
+  if (isClickable(isoCode)) {
+    selectedCountry.value = isoCode
+  }
+}
+
+function handleVisaInformation() {
+  console.log("handleVisaInformation", selectedCountry.value);
+}
+
 async function fetchCountryInfo(isoCode) {
-  console.log('fetchCountryInfo called with:', isoCode)
-  alert(`Загрузка данных о стране: ${isoCode}`)
 }
 
 function getCountryFill(isoCode) {
@@ -101,10 +135,7 @@ function getCountryFill(isoCode) {
 }
 
 onMounted(async () => {
-  console.log('onMounted start')
   const world = geojson;
-  console.log('Гео-данные загружены, количество features:', world.features.length)
-
   const projection = geoMercator().scale(100).translate([400, 200])
   const pathGenerator = geoPath().projection(projection)
 
@@ -125,9 +156,6 @@ onMounted(async () => {
       }
     })
     .filter((country) => country.id && country.path)
-
-  console.log('Итоговое количество стран для рендера:', countries.value.length)
-  console.log('Пример стран:', countries.value.slice(0, 5))
 })
 </script>
 
