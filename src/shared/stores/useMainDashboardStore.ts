@@ -9,6 +9,8 @@ import RevenueWidget from '@/entities/dashboard/RevenueWidget.vue'
 import CommentsWidget from '@/entities/dashboard/CommentsWidget.vue'
 import ClientsWidget from '@/entities/dashboard/ClientsWidget.vue'
 import GirlsAIPicsWidget from '@/entities/dashboard/GirlsAIPicsWidget.vue'
+import MapWidget from '@/entities/MapWidget.vue'
+import InteractiveMapWidget from '@/entities/InteractiveMapWidget.vue'
 
 export const useMainDashboardStore = createDashboardStore({
   storageKey: 'main_dashboard_layout',
@@ -22,5 +24,7 @@ export const useMainDashboardStore = createDashboardStore({
         { id: 'comments', component: markRaw(CommentsWidget), initialSizes: { w: 4, h: 4 } },
         { id: 'clients', component: markRaw(ClientsWidget), initialSizes: { w: 4, h: 4 } },
         { id: 'girlsAiPics', component: markRaw(GirlsAIPicsWidget),initialSizes: {w: 7,h: 27,} },
+        { id: 'leafletWorldMap', component: markRaw(MapWidget),initialSizes: {w: 7,h: 27,} },
+        { id: 'tripAnalysisWorldMap', component: markRaw(InteractiveMapWidget),initialSizes: {w: 7,h: 27,} },
   ]
 })

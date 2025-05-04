@@ -144,10 +144,28 @@ onMounted(() => {
                 {
                     key: '2-0-0',
                     data: {
-                        name: 'Генератор фото девушек',
+                        name: 'Генератор',
                         size: 'Маленький',
                         type: 'Виджет',
                         id: 'girlsAiPics',
+                    }
+                },
+                {
+                    key: '2-1-0',
+                    data: {
+                        name: 'Карта мира Leaflet',
+                        size: 'Маленький',
+                        type: 'Виджет',
+                        id: 'leafletWorldMap',
+                    }
+                },
+                {
+                    key: '2-2-0',
+                    data: {
+                        name: 'Анализ стран для путешествий',
+                        size: 'Маленький',
+                        type: 'Виджет',
+                        id: 'tripAnalysisWorldMap',
                     }
                 },
             ]
