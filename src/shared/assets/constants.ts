@@ -1,7 +1,7 @@
 export const primaryColors = [
     { name: 'noir', palette: {} },
     { name: 'emerald', palette: { 50: '#ecfdf5', 100: '#d1fae5', 200: '#a7f3d0', 300: '#6ee7b7', 400: '#34d399', 500: '#10b981', 600: '#059669', 700: '#047857', 800: '#065f46', 900: '#064e3b', 950: '#022c22' } },
-    { name: 'green', palette: { 50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 300: '#86efac', 400: '#4ade80', 500: '#22c55e', 600: '#16a34a', 700: '#15803d', 800: '#166534', 900: '#14532d', 950: '#052e16' } },
+    { name: '#66BB6A', palette: { 50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 300: '#86efac', 400: '#4ade80', 500: '#22c55e', 600: '#16a34a', 700: '#15803d', 800: '#166534', 900: '#14532d', 950: '#052e16' } },
     { name: 'lime', palette: { 50: '#f7fee7', 100: '#ecfccb', 200: '#d9f99d', 300: '#bef264', 400: '#a3e635', 500: '#84cc16', 600: '#65a30d', 700: '#4d7c0f', 800: '#3f6212', 900: '#365314', 950: '#1a2e05' } },
     { name: 'orange', palette: { 50: '#fff7ed', 100: '#ffedd5', 200: '#fed7aa', 300: '#fdba74', 400: '#fb923c', 500: '#f97316', 600: '#ea580c', 700: '#c2410c', 800: '#9a3412', 900: '#7c2d12', 950: '#431407' } },
     { name: 'amber', palette: { 50: '#fffbeb', 100: '#fef3c7', 200: '#fde68a', 300: '#fcd34d', 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706', 700: '#b45309', 800: '#92400e', 900: '#78350f', 950: '#451a03' } },
@@ -129,4 +129,885 @@ export const commonColorScheme = {
         }
     }
 };
+
+export const iso2to3 = {
+    AD: 'AND', AF: 'AFG', AI: 'AIA', AL: 'ALB', AT: 'AUT', AU: 'AUS', AW: 'ABW',
+    BE: 'BEL', BG: 'BGR', BM: 'BMU', BZ: 'BLZ', CA: 'CAN', CF: 'CAF', CG: 'COG',
+    CH: 'CHE', CM: 'CMR', CN: 'CHN', CW: 'CUW', CY: 'CYP', CZ: 'CZE', DE: 'DEU',
+    DK: 'DNK', DZ: 'DZA', EE: 'EST', ER: 'ERI', ES: 'ESP', FI: 'FIN', FR: 'FRA',
+    GB: 'GBR', GH: 'GHA', GP: 'GLP', GR: 'GRC', HR: 'HRV', HU: 'HUN', IE: 'IRL',
+    IQ: 'IRQ', IS: 'ISL', IT: 'ITA', JP: 'JPN', KP: 'PRK', KW: 'KWT', KY: 'CYM',
+    LI: 'LIE', LR: 'LBR', LT: 'LTU', LU: 'LUX', LV: 'LVA', MC: 'MCO', MF: 'MAF',
+    MK: 'MKD', ML: 'MLI', MQ: 'MTQ', MS: 'MSR', MT: 'MLT', NE: 'NER', NL: 'NLD',
+    NO: 'NOR', NZ: 'NZL', PL: 'POL', PT: 'PRT', RO: 'ROU', RU: 'RUS', SB: 'SLB',
+    SD: 'SDN', SE: 'SWE', SI: 'SVN', SK: 'SVK', SM: 'SMR', SO: 'SOM', SX: 'SXM',
+    TC: 'TCA', TD: 'TCD', TM: 'TKM', TW: 'TWN', UA: 'UKR', US: 'USA', VA: 'VAT',
+    VG: 'VGB', XK: 'XKX', YE: 'YEM', BD: 'BGD', BF: 'BFA', BH: 'BHR', BI: 'BDI',
+    BJ: 'BEN', BT: 'BTN', CD: 'COD', DJ: 'DJI', EG: 'EGY', ET: 'ETH', GA: 'GAB',
+    GN: 'GIN', GQ: 'GNQ', GW: 'GNB', ID: 'IDN', IN: 'IND', IR: 'IRN', JO: 'JOR',
+    KH: 'KHM', KM: 'COM', LB: 'LBN', LS: 'LSO', LY: 'LBY', MG: 'MDG', MH: 'MHL',
+    MR: 'MRT', NG: 'NGA', NP: 'NPL', OM: 'OMN', PG: 'PNG', PK: 'PAK', QA: 'QAT',
+    RW: 'RWA', SA: 'SAU', SG: 'SGP', SL: 'SLE', SN: 'SEN', SS: 'SSD', SY: 'SYR',
+    TG: 'TGO', TL: 'TLS', TO: 'TON', TV: 'TUV', TZ: 'TZA', UG: 'UGA', ZM: 'ZMB',
+    ZW: 'ZWE', AE: 'ARE', AG: 'ATG', AM: 'ARM', AO: 'AGO', AR: 'ARG', AZ: 'AZE',
+    BA: 'BIH', BB: 'BRB', BN: 'BRN', BO: 'BOL', BR: 'BRA', BS: 'BHS', BW: 'BWA',
+    BY: 'BLR', CL: 'CHL', CO: 'COL', CR: 'CRI', CU: 'CUB', CV: 'CPV', DM: 'DMA',
+    DO: 'DOM', EC: 'ECU', FJ: 'FJI', FM: 'FSM', GD: 'GRD', GE: 'GEO', GM: 'GMB',
+    GT: 'GTM', GY: 'GUY', HK: 'HKG', HN: 'HND', HT: 'HTI', JM: 'JAM', KG: 'KGZ',
+    KI: 'KIR', KN: 'KNA', KZ: 'KAZ', LA: 'LAO', LC: 'LCA', MA: 'MAR', MD: 'MDA',
+    ME: 'MNE', MM: 'MMR', MN: 'MNG', MO: 'MAC', MU: 'MUS', MV: 'MDV', MW: 'MWI',
+    MY: 'MYS', MZ: 'MOZ', NA: 'NAM', NI: 'NIC', NR: 'NRU', PA: 'PAN', PE: 'PER',
+    PH: 'PHL', PS: 'PSE', PW: 'PLW', PY: 'PRY', RS: 'SRB', SR: 'SUR', ST: 'STP',
+    SV: 'SLV', SZ: 'SWZ', TH: 'THA', TJ: 'TJK', TN: 'TUN', TR: 'TUR', TT: 'TTO',
+    UY: 'URY', UZ: 'UZB', VC: 'VCT', VE: 'VEN', VN: 'VNM', VU: 'VUT', WS: 'WSM',
+    ZA: 'ZAF', CI: 'CIV', IL: 'ISR', KE: 'KEN', KR: 'KOR', LK: 'LKA', MX: 'MEX',
+    SC: 'SYC'
+  }
+
+  export const countriesAvailability = [
+    {
+        "countryCode": "AD",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "AF",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "AI",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "AL",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "AT",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "AU",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "AW",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "BE",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "BG",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "BM",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "BZ",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "CA",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "CF",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "CG",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "CH",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "CM",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "CN",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "CW",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "CY",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "CZ",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "DE",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "DK",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "DZ",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "EE",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "ER",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "ES",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "FI",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "FR",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "GB",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "GH",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "GP",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "GR",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "HR",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "HU",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "IE",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "IQ",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "IS",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "IT",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "JP",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "KP",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "KW",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "KY",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "LI",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "LR",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "LT",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "LU",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "LV",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "MC",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "MF",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "MK",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "ML",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "MQ",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "MS",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "MT",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "NE",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "NL",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "NO",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "NZ",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "PL",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "PT",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "RO",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "RU",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "SB",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "SD",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "SE",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "SI",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "SK",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "SM",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "SO",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "SX",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "TC",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "TD",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "TM",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "TW",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "UA",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "US",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "VA",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "VG",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "XK",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "YE",
+        "color": "#EF5350"
+    },
+    {
+        "countryCode": "BD",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "BF",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "BH",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "BI",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "BJ",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "BT",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "CD",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "DJ",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "EG",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "ET",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "GA",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "GN",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "GQ",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "GW",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "ID",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "IN",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "IR",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "JO",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "KH",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "KM",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "LB",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "LS",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "LY",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "MG",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "MH",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "MR",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "NG",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "NP",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "OM",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "PG",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "PK",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "QA",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "RW",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "SA",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "SG",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "SL",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "SN",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "SS",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "SY",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "TG",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "TL",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "TO",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "TV",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "TZ",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "UG",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "ZM",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "ZW",
+        "color": "#42A5F5"
+    },
+    {
+        "countryCode": "AE",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "AG",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "AM",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "AO",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "AR",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "AZ",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "BA",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "BB",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "BN",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "BO",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "BR",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "BS",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "BW",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "BY",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "CL",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "CO",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "CR",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "CU",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "CV",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "DM",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "DO",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "EC",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "FJ",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "FM",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "GD",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "GE",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "GM",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "GT",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "GY",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "HK",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "HN",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "HT",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "JM",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "KG",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "KI",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "KN",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "KZ",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "LA",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "LC",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "MA",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "MD",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "ME",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "MM",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "MN",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "MO",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "MU",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "MV",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "MW",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "MY",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "MZ",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "NA",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "NI",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "NR",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "PA",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "PE",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "PH",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "PS",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "PW",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "PY",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "RS",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "SR",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "ST",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "SV",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "SZ",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "TH",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "TJ",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "TN",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "TR",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "TT",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "UY",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "UZ",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "VC",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "VE",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "VN",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "VU",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "WS",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "ZA",
+        "color": "#66BB6A"
+    },
+    {
+        "countryCode": "CI",
+        "color": "yellow"
+    },
+    {
+        "countryCode": "IL",
+        "color": "yellow"
+    },
+    {
+        "countryCode": "KE",
+        "color": "yellow"
+    },
+    {
+        "countryCode": "KR",
+        "color": "yellow"
+    },
+    {
+        "countryCode": "LK",
+        "color": "yellow"
+    },
+    {
+        "countryCode": "MX",
+        "color": "yellow"
+    },
+    {
+        "countryCode": "SC",
+        "color": "yellow"
+    }
+]
 

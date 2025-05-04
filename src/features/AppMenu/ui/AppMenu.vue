@@ -12,6 +12,7 @@ const model = ref([
         label: 'Путешествия',
         items: [
             { label: 'График', icon: 'pi pi-fw pi-id-card', to: '/schedule' },
+            { label: 'Анализ стран', icon: 'pi pi-fw pi-map', to: '/worldMap' },
             { label: 'Расчет остатка дней', icon: 'pi pi-fw pi-check-square', to: '' },
             { label: 'План', icon: 'pi pi-fw pi-mobile', to: '', class: 'rotated-icon' }
         ]

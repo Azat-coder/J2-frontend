@@ -16,6 +16,11 @@ export const routes = [
                 component: () => import('@/views/Schedule.vue')
             },
             {
+                path: '/worldMap',
+                name: 'worldMap',
+                component: () => import('@/views/WorldMap.vue')
+            },
+            {
                 path: '/settings',
                 name: 'settings',
                 component: () => import('@/views/Settings.vue')
