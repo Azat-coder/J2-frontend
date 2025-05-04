@@ -1,0 +1,1 @@
+import{o as e,b as a,h as s,j as t,f as c,I as o}from"./index-D8q9Ah5_.js";const l={class:"w-full h-full"},r={class:"card mb-0 w-full h-full"},u={__name:"WorldMap",setup(_){return(n,d)=>(e(),a("div",l,[s("div",r,[t(c(o))])]))}};export{u as default};
