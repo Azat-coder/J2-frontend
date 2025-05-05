@@ -1,0 +1,1 @@
+export { default as CostOfLiving } from './CostOfLiving.vue'
