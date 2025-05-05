@@ -29,6 +29,15 @@
 
     <ContextMenu ref="contextMenu" :model="contextMenuItems" />
 
+    <Drawer 
+      v-model:visible="isDrawerVisible" 
+      header="Визовая информация" 
+      position="bottom"
+      :style="{ height: '40vh' }"
+    >
+        <VisaInformation :isoCode="iso3to2[selectedCountry]" />
+    </Drawer>
+
     <div
       v-if="tooltip.visible"
       :style="{
@@ -54,6 +63,7 @@ import { ref, onMounted, nextTick } from 'vue'
 import { geojson } from '@/shared/assets/geojson.ts'
 import { geoPath, geoMercator } from 'd3-geo'
 import { iso2to3, countriesAvailability } from '@/shared/assets/constants.ts';
+import { VisaInformation } from '@/shared/ui/VisaInformation'
 
 const countries = ref([])
 const hoveredCountry = ref(null)
@@ -61,6 +71,7 @@ const selectedCountry = ref(null)
 const tooltip = ref({ visible: false, x: 0, y: 0, name: '' })
 const clickableCountries = Object.values(iso2to3);
 const contextMenu = ref(null);
+const isDrawerVisible = ref(false);
 
 const contextMenuItems = ref([
     {
@@ -84,6 +95,11 @@ const contextMenuItems = ref([
         icon: 'pi pi-chart-bar'
     }
 ]);
+
+// Обратный мап: из трехбуквенного в двухбуквенный
+const iso3to2 = Object.fromEntries(
+  Object.entries(iso2to3).map(([iso2, iso3]) => [iso3, iso2])
+)
 
 function isClickable(isoCode) {
   return isoCode && clickableCountries.includes(isoCode)
@@ -114,15 +130,16 @@ function onCountryClick(isoCode) {
 }
 
 function handleContextMenuClick(event, isoCode) {
-  contextMenu.value.show(event);
-
+  
   if (isClickable(isoCode)) {
     selectedCountry.value = isoCode
   }
+  nextTick(() => contextMenu.value.show(event))
 }
 
 function handleVisaInformation() {
   console.log("handleVisaInformation", selectedCountry.value);
+  isDrawerVisible.value = true;
 }
 
 async function fetchCountryInfo(isoCode) {

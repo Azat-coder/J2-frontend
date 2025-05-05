@@ -49,7 +49,7 @@ const saveChanges = () => {
                     </g>
                 </svg> -->
 
-                <span>JARVIS</span>
+                <!-- <span>JARVIS</span> -->
             </router-link>
         </div>
 
