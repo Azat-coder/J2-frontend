@@ -142,7 +142,7 @@ onMounted(() => {
             },
             children: [
                 {
-                    key: '2-0-0',
+                    key: '2-0',
                     data: {
                         name: 'Генератор',
                         size: 'Маленький',
@@ -151,22 +151,41 @@ onMounted(() => {
                     }
                 },
                 {
-                    key: '2-1-0',
+                    key: '2-1',
                     data: {
-                        name: 'Карта мира Leaflet',
+                        name: 'Картографические сервисы',
                         size: 'Маленький',
                         type: 'Виджет',
-                        id: 'leafletWorldMap',
-                    }
-                },
-                {
-                    key: '2-2-0',
-                    data: {
-                        name: 'Анализ стран для путешествий',
-                        size: 'Маленький',
-                        type: 'Виджет',
-                        id: 'tripAnalysisWorldMap',
-                    }
+                    },
+                    children: [
+                        {
+                            key: '2-1-0',
+                            data: {
+                                name: 'Карта мира Leaflet',
+                                size: 'Маленький',
+                                type: 'Виджет',
+                                id: 'leafletWorldMap',
+                            }
+                        },
+                        {
+                            key: '2-1-1',
+                            data: {
+                                name: 'Анализ стран для путешествий',
+                                size: 'Маленький',
+                                type: 'Виджет',
+                                id: 'tripAnalysisWorldMap',
+                            }
+                        },
+                        {
+                            key: '2-1-2',
+                            data: {
+                                name: 'Анализ стран(полярные координаты)',
+                                size: 'Маленький',
+                                type: 'Виджет',
+                                id: 'polarWorldMap',
+                            }
+                        },
+                    ]
                 },
             ]
         },

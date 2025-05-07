@@ -11,6 +11,7 @@ import ClientsWidget from '@/entities/dashboard/ClientsWidget.vue'
 import GirlsAIPicsWidget from '@/entities/dashboard/GirlsAIPicsWidget.vue'
 import MapWidget from '@/entities/MapWidget.vue'
 import InteractiveMapWidget from '@/entities/InteractiveMapWidget.vue'
+import PolarMapWidget from '@/entities/PolarMapWidget.vue'
 
 export const useMainDashboardStore = createDashboardStore({
   storageKey: 'main_dashboard_layout',
@@ -26,5 +27,6 @@ export const useMainDashboardStore = createDashboardStore({
         { id: 'girlsAiPics', component: markRaw(GirlsAIPicsWidget),initialSizes: {w: 7,h: 27,} },
         { id: 'leafletWorldMap', component: markRaw(MapWidget),initialSizes: {w: 7,h: 27,} },
         { id: 'tripAnalysisWorldMap', component: markRaw(InteractiveMapWidget),initialSizes: {w: 7,h: 27,} },
+        { id: 'polarWorldMap', component: markRaw(PolarMapWidget),initialSizes: {w: 7,h: 27,} },
   ]
 })
