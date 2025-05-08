@@ -1,35 +1,49 @@
 <template>
     <div ref="mapContainer" style="position: relative; width: 100%; height: 100%; overflow: hidden;">
-      <svg ref="svgRef" :width="mapSize" :height="mapSize" style="position: absolute; top: 0; left: 0;">
-        <g ref="globeRef">
-          <path
-            v-for="country in countries"
-            :key="country.id"
-            :d="country.path"
-            :fill="getCountryFill(country.id)"
-            stroke="#fff"
-            stroke-width="0.5"
-            @contextmenu.prevent="(e) => handleContextMenuClick(e, country.id, country.name)"
-            :style="{ cursor: isClickable(country.id) ? 'pointer' : 'default' }"
-          />
-        </g>
-      </svg>
+        <svg ref="svgRef" :width="mapSize" :height="mapSize" style="position: absolute; top: 0; left: 0;">
+            <g ref="globeRef">
+            <path
+                v-for="country in countries"
+                :key="country.id"
+                :d="country.path"
+                :fill="getCountryFill(country.id)"
+                stroke="#fff"
+                stroke-width="0.5"
+                @contextmenu.prevent="(e) => handleContextMenuClick(e, country.id, country.name)"
+                :style="{ cursor: isClickable(country.id) ? 'pointer' : 'default' }"
+            />
+            </g>
+        </svg>
 
-      <ContextMenu ref="contextMenu" :model="contextMenuItems" />
+        <ContextMenu ref="contextMenu" :model="contextMenuItems" />
 
-    <Drawer v-model:visible="isDrawerVisible" header="Визовая информация" position="bottom" :style="{ height: isMobile ? '60vh' : '40vh' }">
-      <VisaInformation :isoCode="iso3to2[selectedCountry]" />
-    </Drawer>
+        <Drawer v-model:visible="isDrawerVisible" header="Визовая информация" position="bottom" :style="{ height: isMobile ? '60vh' : '40vh' }">
+            <VisaInformation :isoCode="iso3to2[selectedCountry]" />
+        </Drawer>
+
+        <Drawer v-model:visible="isCostOfLivingDrawerVisible" header="Стоимость жизни" position="full" :style="{ height: isMobile ? '60vh' : '40vh' }">
+            <CostOfLiving :isoCode="iso3to2[selectedCountry]" />
+        </Drawer>
     </div>
   </template>
   
   <script setup lang="ts">
-  import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+  import { ref, onMounted, onUnmounted, watch, nextTick, toRefs, computed } from 'vue'
   import * as d3 from 'd3'
   import { geojson } from '@/shared/assets/geojson.ts'
   import { iso2to3, countriesAvailability } from '@/shared/assets/constants.ts'
   import { VisaInformation } from '@/shared/ui/VisaInformation'
+  import { CostOfLiving } from '@/shared/ui/CostOfLiving'
+  import { worldCities as cities } from '@/shared/ui/CostOfLiving/model/cities.ts'
   import { useMediaQuery } from '@vueuse/core'
+
+  const props = defineProps<{
+    mapMode: boolean;
+}>();
+
+const { mapMode } = toRefs(props);
+
+watch(mapMode, (val) => console.log(val))
 
 const isMobile = useMediaQuery('(max-width: 768px)')
   
@@ -42,10 +56,16 @@ const isMobile = useMediaQuery('(max-width: 768px)')
   const selectedCountry = ref(null)
 const contextMenu = ref(null)
 const isDrawerVisible = ref(false)
+const isCostOfLivingDrawerVisible = ref(false);
 
-const contextMenuItems = ref([
+const selectedCountryCities = computed(() => {
+    const country = countries.value.find((c) => c.id === selectedCountry?.value)
+    return cities.filter((c) => c.country_name === country?.name).map((c) => c.city_name)
+})
+
+const contextMenuItems = computed(() => [
   { label: 'Визовая информация', icon: 'pi pi-globe', command: handleVisaInformation },
-  { label: 'Стоимость жизни', icon: 'pi pi-wallet' },
+  { label: 'Стоимость жизни', icon: 'pi pi-wallet', items: selectedCountryCities.value.map((city) => ({'label': city, 'command': handleCostOfLiving})) },
   { label: 'Погода', icon: 'pi pi-sun' },
   { separator: true },
   { label: 'Добавить к сравнению', icon: 'pi pi-chart-bar' }
@@ -80,6 +100,10 @@ const iso3to2 = Object.fromEntries(Object.entries(iso2to3).map(([iso2, iso3]) =>
 
 function handleVisaInformation() {
   isDrawerVisible.value = true
+}
+
+function handleCostOfLiving() {
+    isCostOfLivingDrawerVisible.value = true
 }
   
   function resize() {
