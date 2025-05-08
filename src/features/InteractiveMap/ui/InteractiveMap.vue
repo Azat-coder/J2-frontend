@@ -63,7 +63,7 @@
 
     <ContextMenu ref="contextMenu" :model="contextMenuItems" />
 
-    <Drawer v-model:visible="isDrawerVisible" header="Визовая информация" position="bottom" :style="{ height: '40vh' }">
+    <Drawer v-model:visible="isDrawerVisible" header="Визовая информация" position="bottom" :style="{ height: isMobile ? '60vh' : '40vh' }">
       <VisaInformation :isoCode="iso3to2[selectedCountry]" />
     </Drawer>
 
@@ -95,6 +95,9 @@ import { geoPath, geoMercator } from 'd3-geo'
 import { iso2to3, countriesAvailability } from '@/shared/assets/constants.ts';
 import { VisaInformation } from '@/shared/ui/VisaInformation'
 import { worldCities as cities } from '@/shared/ui/CostOfLiving/model/cities.ts'
+import { useMediaQuery } from '@vueuse/core'
+
+const isMobile = useMediaQuery('(max-width: 768px)')
 
 const countries = ref([])
 const hoveredCountry = ref(null)

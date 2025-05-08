@@ -142,7 +142,7 @@ onMounted(() => {
             },
             children: [
                 {
-                    key: '2-0',
+                    key: '2-0-0',
                     data: {
                         name: 'Генератор',
                         size: 'Маленький',

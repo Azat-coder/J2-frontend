@@ -17,7 +17,7 @@
 
       <ContextMenu ref="contextMenu" :model="contextMenuItems" />
 
-    <Drawer v-model:visible="isDrawerVisible" header="Визовая информация" position="bottom" :style="{ height: '40vh' }">
+    <Drawer v-model:visible="isDrawerVisible" header="Визовая информация" position="bottom" :style="{ height: isMobile ? '60vh' : '40vh' }">
       <VisaInformation :isoCode="iso3to2[selectedCountry]" />
     </Drawer>
     </div>
@@ -29,6 +29,9 @@
   import { geojson } from '@/shared/assets/geojson.ts'
   import { iso2to3, countriesAvailability } from '@/shared/assets/constants.ts'
   import { VisaInformation } from '@/shared/ui/VisaInformation'
+  import { useMediaQuery } from '@vueuse/core'
+
+const isMobile = useMediaQuery('(max-width: 768px)')
   
   const mapContainer = ref(null)
   const svgRef = ref(null)
@@ -135,33 +138,105 @@ function handleVisaInformation() {
   function setupInteraction() {
   const svg = d3.select(svgRef.value)
 
-  // Вращение карты
-  svg.call(d3.drag()
-    .on('start', () => {
-      svg.style('cursor', 'grabbing')
-      isUserInteracted.value = true
-      pauseAutoRotate()
-    })
-    .on('drag', (event) => {
-      rotation.value = [rotation.value[0] + event.dx * 0.5, rotation.value[1] - event.dy * 0.5]
+  let isDragging = false
+  let lastTouchPos = { x: 0, y: 0 }
+  let lastTouchDistance = null
+
+  svg.on('touchstart', (event) => {
+    event.preventDefault()
+    isUserInteracted.value = true
+    pauseAutoRotate()
+
+    if (event.touches.length === 1) {
+      // Вращение старт
+      isDragging = true
+      lastTouchPos = { x: event.touches[0].clientX, y: event.touches[0].clientY }
+    } else if (event.touches.length === 2) {
+      // Pinch зум старт
+      lastTouchDistance = getTouchDistance(event.touches)
+    }
+  })
+
+  svg.on('touchmove', (event) => {
+    event.preventDefault()
+
+    if (event.touches.length === 1 && isDragging) {
+      // Вращение
+      const currentX = event.touches[0].clientX
+      const currentY = event.touches[0].clientY
+      const dx = currentX - lastTouchPos.x
+      const dy = currentY - lastTouchPos.y
+
+      lastTouchPos = { x: currentX, y: currentY }
+
+      rotation.value = [rotation.value[0] + dx * 0.5, rotation.value[1] - dy * 0.5]
       projection.rotate(rotation.value)
       redraw()
-    })
-    .on('end', () => {
-      svg.style('cursor', 'default')
-    })
-  )
+    } else if (event.touches.length === 2) {
+      // Зум pinch
+      const currentDistance = getTouchDistance(event.touches)
+      if (lastTouchDistance) {
+        const zoomFactor = currentDistance / lastTouchDistance
+        scale.value *= zoomFactor
+        projection.scale(scale.value)
+        redraw()
+      }
+      lastTouchDistance = currentDistance
+    }
+  })
 
-  // Зум (поддерживает и колесо мыши, и pinch жесты)
-  svg.call(d3.zoom()
-    .scaleExtent([0.5, 5])
-    .on('zoom', (event) => {
-      scale.value = ((mapSize.value / 2) * 0.9) * event.transform.k
-      projection.scale(scale.value)
-      redraw()  // Без анимаций для естественного pinch zoom
-      isUserInteracted.value = true
-    })
-  )
+  svg.on('touchend', (event) => {
+    isDragging = false
+    if (event.touches.length < 2) {
+      lastTouchDistance = null
+    }
+  })
+
+  // Мышь: вращение
+  let isMouseDragging = false
+  svg.on('mousedown', (event) => {
+    event.preventDefault()
+    isMouseDragging = true
+    isUserInteracted.value = true
+    pauseAutoRotate()
+    lastTouchPos = { x: event.clientX, y: event.clientY }
+  })
+
+  svg.on('mousemove', (event) => {
+    if (isMouseDragging) {
+      event.preventDefault()
+      const dx = event.clientX - lastTouchPos.x
+      const dy = event.clientY - lastTouchPos.y
+      lastTouchPos = { x: event.clientX, y: event.clientY }
+
+      rotation.value = [rotation.value[0] + dx * 0.5, rotation.value[1] - dy * 0.5]
+      projection.rotate(rotation.value)
+      redraw()
+    }
+  })
+
+  svg.on('mouseup', () => {
+    isMouseDragging = false
+  })
+
+  svg.on('mouseleave', () => {
+    isMouseDragging = false
+  })
+
+  // Колесо мыши зум
+  svg.on('wheel', (event) => {
+    event.preventDefault()
+    const zoomFactor = event.deltaY > 0 ? 0.9 : 1.1
+    scale.value *= zoomFactor
+    projection.scale(scale.value)
+    redraw()
+  })
+}
+
+function getTouchDistance(touches) {
+  const dx = touches[0].clientX - touches[1].clientX
+  const dy = touches[0].clientY - touches[1].clientY
+  return Math.sqrt(dx * dx + dy * dy)
 }
   
   let resizeObserver: ResizeObserver
