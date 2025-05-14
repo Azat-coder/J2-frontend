@@ -17,12 +17,12 @@
 
         <ContextMenu ref="contextMenu" :model="contextMenuItems" />
 
-        <Drawer v-model:visible="isDrawerVisible" header="Визовая информация" position="bottom" :style="{ height: isMobile ? '60vh' : '40vh' }">
+        <Drawer id="1" v-model:visible="isDrawerVisible" header="Визовая информация" position="bottom" :style="{ height: isMobile ? '60vh' : '40vh' }">
             <VisaInformation :isoCode="iso3to2[selectedCountry]" />
         </Drawer>
 
-        <Drawer v-model:visible="isCostOfLivingDrawerVisible" header="Стоимость жизни" position="full" :style="{ height: isMobile ? '60vh' : '40vh' }">
-            <CostOfLiving :isoCode="iso3to2[selectedCountry]" />
+        <Drawer id="2" v-model:visible="isCostOfLivingDrawerVisible" header="Стоимость жизни" position="full" :style="{ height: isMobile ? '60vh' : '40vh' }">
+            <CostOfLiving :cityName="cityName" :countryName="countryName" />
         </Drawer>
     </div>
   </template>
@@ -52,6 +52,8 @@ const isMobile = useMediaQuery('(max-width: 768px)')
   const globeRef = ref(null)
   const mapSize = ref(0)
   const countries = ref([])
+  const cityName = ref("");
+  const countryName = ref("");
 
   const selectedCountry = ref(null)
 const contextMenu = ref(null)
@@ -63,9 +65,13 @@ const selectedCountryCities = computed(() => {
     return cities.filter((c) => c.country_name === country?.name).map((c) => c.city_name)
 })
 
+const selectedCountryName = computed(() => {
+  return countries.value.find((c) => c.id === selectedCountry?.value)?.name || ""
+});
+
 const contextMenuItems = computed(() => [
   { label: 'Визовая информация', icon: 'pi pi-globe', command: handleVisaInformation },
-  { label: 'Стоимость жизни', icon: 'pi pi-wallet', items: selectedCountryCities.value.map((city) => ({'label': city, 'command': handleCostOfLiving})) },
+  { label: 'Стоимость жизни', icon: 'pi pi-wallet', items: selectedCountryCities.value.map((city) => ({'label': city, 'command': (city) => handleCostOfLiving(city)})) },
   { label: 'Погода', icon: 'pi pi-sun' },
   { separator: true },
   { label: 'Добавить к сравнению', icon: 'pi pi-chart-bar' }
@@ -102,8 +108,10 @@ function handleVisaInformation() {
   isDrawerVisible.value = true
 }
 
-function handleCostOfLiving() {
-    isCostOfLivingDrawerVisible.value = true
+function handleCostOfLiving(event) {
+  cityName.value = event.item.label
+  countryName.value = selectedCountryName.value
+  nextTick(() => isCostOfLivingDrawerVisible.value = true)
 }
   
   function resize() {
