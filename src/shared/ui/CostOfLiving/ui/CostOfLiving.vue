@@ -57,7 +57,6 @@
       :value="filteredItems" 
       responsiveLayout="scroll"
       filterDisplay="row"
-      :filters="filters"
       @filter="onFilter"
       >
       <Column 
@@ -90,7 +89,7 @@
           :sortable="true"
       >
           <template #body="{ data }">
-          {{ formatPrice(convertCurrency(data.min)) }}
+          {{ formatPrice(convertCurrency(data?.usd?.min)) }}
           </template>
       </Column>
 
@@ -100,7 +99,7 @@
           :sortable="true"
       >
           <template #body="{ data }">
-          {{ formatPrice(convertCurrency(data.avg)) }}
+          {{ formatPrice(convertCurrency(data?.usd?.avg)) }}
           </template>
       </Column>
 
@@ -110,7 +109,7 @@
           :sortable="true"
       >
           <template #body="{ data }">
-          {{ formatPrice(convertCurrency(data.max)) }}
+          {{ formatPrice(convertCurrency(data?.usd?.max)) }}
           </template>
       </Column>
       </DataTable>
@@ -140,15 +139,6 @@ const categoryOptions = ref<{ label: string; value: string | null }[]>([]);
 const toast = useToast();
 
 // Ключ для локалстораджа, можно сделать зависимым от города/страны
-// const storageKey = `cost_of_living_${cityName.value}_${countryName.value}`;
-
-// const cachedData = useLocalStorage<any>(storageKey, null, {
-//   serializer: {
-//       read: (v: string) => JSON.parse(v),
-//       write: (v: any) => JSON.stringify(v)
-//   }
-// });
-
 const storageKey = 'cost_of_living_data';
 
 const storage = useLocalStorage<Record<string, { cachedAt: number; data: any }>>(storageKey, {}, {
@@ -164,7 +154,7 @@ const selectedCurrency = ref('RUB');
 const selectedCategory = ref(null);
 
 // Табличные фильтры
-const filters = reactive({
+const filters = ref({
   item_name: { value: null, matchMode: 'contains' },
   category_name: { value: null, matchMode: 'contains' }
 });
@@ -261,23 +251,27 @@ const filteredItems = computed(() => {
   let items = allItems.value;
 
   if (selectedCategory.value) {
-      items = items.filter(i => i.category_name === selectedCategory.value);
+    items = items.filter(i => i.category_name === selectedCategory.value);
   }
 
   // Табличные фильтры (поиск)
-  if (filters.item_name.value) {
-      items = items.filter(i =>
+  const itemFilter = filters.value.item_name.value;
+  const categoryFilter = filters.value.category_name.value;
+
+  if (itemFilter) {
+    items = items.filter(i =>
       (itemTranslations[i.item_name] || i.item_name)
-          .toLowerCase()
-          .includes(filters.item_name.value.toLowerCase())
-      );
+        .toLowerCase()
+        .includes(itemFilter.toLowerCase())
+    );
   }
-  if (filters.category_name.value) {
-      items = items.filter(i =>
+
+  if (categoryFilter) {
+    items = items.filter(i =>
       (categoryTranslations[i.category_name] || i.category_name)
-          .toLowerCase()
-          .includes(filters.category_name.value.toLowerCase())
-      );
+        .toLowerCase()
+        .includes(categoryFilter.toLowerCase())
+    );
   }
 
   return items;
@@ -346,7 +340,7 @@ const getCountryCode = (currencyCode: string) => {
 
 // Обработка фильтров таблицы
 const onFilter = (e: any) => {
-  Object.assign(filters, e.filters);
+  filters.value = e.filters;
 };
 
 onMounted(() => {

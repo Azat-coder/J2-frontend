@@ -9,7 +9,7 @@
                 :fill="getCountryFill(country.id)"
                 stroke="#fff"
                 stroke-width="0.5"
-                @contextmenu.prevent="(e) => handleContextMenuClick(e, country.id, country.name)"
+                @contextmenu.prevent="(e) => handleContextMenuClick(e, country.id)"
                 :style="{ cursor: isClickable(country.id) ? 'pointer' : 'default' }"
             />
             </g>
@@ -166,6 +166,8 @@ function handleCostOfLiving(event) {
     stopAutoRotate()
     rotateTimeout = setTimeout(startAutoRotate, 3000) // Автоворот снова через 3 секунды бездействия
   }
+
+  let longPressTimer = null
   
   function setupInteraction() {
   const svg = d3.select(svgRef.value)
@@ -179,6 +181,26 @@ function handleCostOfLiving(event) {
     isUserInteracted.value = true
     pauseAutoRotate()
 
+    const touch = event.touches[0]
+    const clientX = touch.clientX
+    const clientY = touch.clientY
+
+    longPressTimer = setTimeout(() => {
+      const touchTarget = document.elementFromPoint(clientX, clientY)
+      const pathD = touchTarget?.getAttribute?.('d')
+      const country = countries.value.find((c) => c.path === pathD)
+
+      if (country) {
+        selectedCountry.value = country.id
+        contextMenu.value.show({ 
+          pageX: clientX, 
+          pageY: clientY, 
+          stopPropagation: () => {},
+          preventDefault: () => {} 
+        })
+      }
+    }, 600) // 600 мс для long press
+
     if (event.touches.length === 1) {
       // Вращение старт
       isDragging = true
@@ -191,6 +213,11 @@ function handleCostOfLiving(event) {
 
   svg.on('touchmove', (event) => {
     event.preventDefault()
+
+    if (longPressTimer) {
+      clearTimeout(longPressTimer)
+      longPressTimer = null
+    }
 
     if (event.touches.length === 1 && isDragging) {
       // Вращение
@@ -221,6 +248,11 @@ function handleCostOfLiving(event) {
     isDragging = false
     if (event.touches.length < 2) {
       lastTouchDistance = null
+    }
+
+    if (longPressTimer) {
+      clearTimeout(longPressTimer)
+      longPressTimer = null
     }
   })
 
@@ -288,6 +320,7 @@ function getTouchDistance(touches) {
     resizeObserver.disconnect()
     stopAutoRotate()
     if (rotateTimeout) clearTimeout(rotateTimeout)
+    if (longPressTimer) clearTimeout(longPressTimer)
   })
   </script>
   
